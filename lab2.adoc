@@ -247,9 +247,10 @@ std::uint32_t* reg_ptr = reinterpret_cast<std::uint32_t*>(0x40021000);
 Получится 32-битное число формата *uint32_t=0x281E140A*. В десятичной системе *0x281E140A* = *673059850*. Таким образом, *b = 673059850*.
 
 . *std::uint32_t ptr* = *reinterpret_cast<std::uint32_t**>(1); *auto b = *ptr; //чему равно b?*
-
++
 Ответ: b будет равно значению, хранящемуся по адресу ptr. При этом b будет иметь тип *uint32_t*.
-*std::uint16_t ptr* = *reinterpret_cast<std::uint16_t**>(1); *auto b = *ptr; //чему равно b?*
+
+. *std::uint16_t ptr* = *reinterpret_cast<std::uint16_t**>(1); *auto b = *ptr; //чему равно b?*
 +
 Ответ: b будет равно значению, хранящемуся по адресу ptr. При этом b будет иметь тип *uint16_t*.
 
