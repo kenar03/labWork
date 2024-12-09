@@ -584,3 +584,22 @@ int main()
   return 1;
 }
 ----
+
+Таким образом, структура проекта в IAR выглядит следующим образом:
+
+.Структура проекта
+image::project_structure.jpg[]
+
+[plantuml, example-class, png]
+----
+@startuml
+class Person {
+    - name: String
+    - age: int
+    + getName(): String
+    + setName(String name): void
+}
+@enduml
+----
+
+
