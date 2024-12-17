@@ -25,7 +25,7 @@ include::lab5_6_titul.adoc[]
 
 Также классы следует разделить на группы по своему функциональному назначению. Например, классы, отвечающие за работу светодиодов, следует расположить в папке _Leds_, за работу режимов - в папку _Modes_ и т.д.
 
-Кроме того, заголовочные файлы должны иметь защиту от повторного запуска, которая реализуется в виде:
+Кроме того, заголовочные файлы должны иметь защиту от повторного включения, которая реализуется в виде:
 
 [source,cpp]
 ----
@@ -36,6 +36,9 @@ include::lab5_6_titul.adoc[]
 
 #endif
 ----
+
+Перед сборкой проекта компилятор просто добавляет код из заголовочного файла, что может привсти к тому, что код из этого файла будет добавлен несколько раз.
+Чтобы этого не произошло, используется защита от повторного включения.
 
 [IMPORTANT]
 Файлы интерфейсов располагаются в папке *Contracts*
@@ -315,6 +318,38 @@ using tMode = std::array<IMode*, 3>;
 * Обновление режима, т.е. переключение светодиодов в необходимом порядке.
 * Переключение режима на следующий по порядку.
 
+Нарисуем UML-диаграмму класса <<UML_ModeManager, *ModeManager*>>.
+
+[[UML_ModeManager]]
+.UML-диаграмма класса ModeManager
+[plantuml]
+....
+interface IModeManager {
+  + InitCurrentMode() : void
+  + UpdateCurrentMode() : void
+  + SwitchMode() : void
+}
+
+class ModeManager {
+  + ModeManager(tMode& modes)
+  + InitCurrentMode() : void
+  + UpdateCurrentMode() : void
+  + SwitchMode() : void
+  
+  - modes : tMode&
+  - currentModeIndex : std::uint8_t
+}
+
+IModeManager <|-- ModeManager
+
+interface IMode {
+  + Init() : void
+  + Update() : void
+}
+
+ModeManager o-- IMode
+....
+
 Реализуем интерфейс этого класса.
 
 .Файл *IModeManager.h*
@@ -348,13 +383,13 @@ public:
 class ModeManager : public IModeManager
 {
 public:
-  ModeManager(tMode& modes); // На входе объекта класса - массив светодиодов
-  void InitCurrentMode() override; // Инициализация режима
-  void UpdateCurrentMode() override; // Обновление режима
-  void SwitchMode() override; // Переключение режима
+  ModeManager(tMode& modes);
+  void InitCurrentMode() override;
+  void UpdateCurrentMode() override;
+  void SwitchMode() override;
 private:
-  tMode& modes; // Массив режимов
-  std::uint8_t currentModeIndex; // Номер используемого режима
+  tMode& modes;
+  std::uint8_t currentModeIndex;
 };
 
 #endif
@@ -420,8 +455,7 @@ void ModeManager::SwitchMode()
 class IButton
 {
 public:
-  virtual bool IsButtonPressed() = 0; // Отслеживает, нажата ли кнопка
-  virtual bool WasButtonPressed() = 0; // Фиксирует нажатие кнопки
+  virtual bool IsPressed() = 0;
 };
 
 #endif
@@ -440,31 +474,27 @@ public:
 template<typename Tport, int pinNumber>
 class Button : public IButton
 {
-public:        
-  bool IsButtonPressed() override
+public:
+  bool IsPressed() override
   {
-    portState = Tport::IDR::Get(); // Считать значение порта IDR
-    currentButtonState = (portState & (1 << pinNumber)); // Считать значение бита порта
-    return (!currentButtonState); // Вернуть состояние нажатия кнопки
-  }
-  
-  bool WasButtonPressed() override
-  {
-    isPressed = 0;
-    IsButtonPressed(); // Отследить, нажата ли кнопка
-    if(currentButtonState && !lastButtonState) // Проверка фиксации
+    if(IsButtonPressed() && (lastButtonState == 0))
     {
-      isPressed = 1;
+      lastButtonState = 1;
+      return 1;
     }
-    lastButtonState = currentButtonState; // Запись предыдущего значения
-    
-    return isPressed; // Возврат зафиксированного нажатия
+    else if (!IsButtonPressed())
+    {
+      lastButtonState = 0;
+    }
+    return 0;
   }
 private:
-  std::uint32_t portState;
-  bool currentButtonState; // Переменная, хранящая текущее состояние кнопки
-  bool lastButtonState; // Переменная, хранящая предыдущее состояние кнопки
-  bool isPressed; // Переменная, фиксирующая нажатие
+  bool IsButtonPressed()
+  {
+    auto portState = Tport::IDR::Get();
+    return ((portState & (1 << pinNumber)) == 0);
+  }
+  bool lastButtonState = 0;
 };
 
 #endif
@@ -495,13 +525,13 @@ std::uint32_t SystemCoreClock = 16'000'000U;
 extern "C" {
   int __low_level_init(void)
   {
-  //Switch on external 16 MHz oscillator
+  //Switch on internal 16 MHz oscillator
   RCC::CR::HSION::On::Set();
   while (RCC::CR::HSIRDY::NotReady::IsSet())
   {
   
 }
-  //Switch system clock on external oscillator
+  //Switch system clock on internal oscillator
   RCC::CFGR::SW::Hsi::Set();
   while (!RCC::CFGR::SWS::Hsi::IsSet())
   {
@@ -539,15 +569,13 @@ int main()
   //Порт С.13 на ввод
   GPIOC::MODER::MODER13::Input::Set();
   
-  Button<GPIOC, 13> btn; // Указать порт и пин для кнопки
+  Button<GPIOC, 13> button;
 
-   // Указать порты и пины для светодиодов
   Led<GPIOC, 5> led1;
   Led<GPIOC, 8> led2;
   Led<GPIOC, 9> led3;
   Led<GPIOA, 5> led4;
   
-  // Создать массив светодиодов
   tLeds leds = {
     &led1,
     &led2,
@@ -555,28 +583,26 @@ int main()
     &led4};
   
   
-  ChessMode chessmode(leds); // Задать шахматный режим
-  AllMode allmode(leds); // Задать режим "одновременно"
-  TreeMode treemode(leds); // Задать режим "ёлочкой"
+  ChessMode chessmode(leds);
+  AllMode allmode(leds);
+  TreeMode treemode(leds);
   
-  // Создать массив режимов
   tMode modes = {
     &chessmode,
     &allmode,
     &treemode
   };
 
-  ModeManager modeManager(modes); // Объект класса "ModeManager"
-  modeManager.InitCurrentMode(); // Инициализировать первый режим из массива
+  ModeManager modeManager(modes);
+  modeManager.InitCurrentMode();
   
   for(;;)
   {
-    modeManager.UpdateCurrentMode(); // Обновить выбранный режим
+    modeManager.UpdateCurrentMode();
 
-    // Если кнопка была нажата
-    if (btn.WasButtonPressed())
+    if (button.IsPressed())
     {
-      modeManager.SwitchMode(); // Переключить режим на следующий
+      modeManager.SwitchMode();
     }
     delay(1000000);
   }
@@ -648,19 +674,19 @@ std::uint32_t SystemCoreClock = 16'000'000U; // Указание тактово�
 extern "C" {
  int __low_level_init(void)
  {
-  RCC::CR::HSION::On::Set(); // Установление бита HSION в регистре CR
-  while (RCC::CR::HSIRDY::NotReady::IsSet()) // Проверка готовности
+  RCC::CR::HSION::On::Set();
+  while (RCC::CR::HSIRDY::NotReady::IsSet())
   {
   
   }
  
-  RCC::CFGR::SW::Hsi::Set(); // Выбор HSI в качестве источника тактирования
-  while (!RCC::CFGR::SWS::Hsi::IsSet()) // Проверка готовности
+  RCC::CFGR::SW::Hsi::Set();
+  while (!RCC::CFGR::SWS::Hsi::IsSet())
   {
   
   }
   
-  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+  //RCC::APB2ENR::SYSCFGEN::Enable::Set(); // Подать тактирование на контроллер конфигурации системы 
   
   return 1;
  }
@@ -675,25 +701,24 @@ extern "C" {
 
 [source, cpp]
 ----
-std::uint32_t SystemCoreClock = 8'000'000U; // Указание тактовой частоты
+std::uint32_t SystemCoreClock = 8'000'000U;
 
 extern "C" {
  int __low_level_init(void)
  {
-  RCC::CR::HSION::Off::Set(); // Сброс бита HSION в регистре CR
-  RCC::CR::HSEON::On::Set(); // Установление бита HSEON в регистре CR
-  while (RCC::CR::HSERDY::NotReady::IsSet()) // Проверка готовности
+  RCC::CR::HSEON::On::Set();
+  while (RCC::CR::HSERDY::NotReady::IsSet())
   {
   
   }
  
-  RCC::CFGR::SW::Hse::Set(); // Выбор HSI в качестве источника тактирования
-  while (!RCC::CFGR::SWS::Hse::IsSet()) // Проверка готовности
+  RCC::CFGR::SW::Hse::Set();
+  while (!RCC::CFGR::SWS::Hse::IsSet())
   {
   
   }
   
-  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+  //RCC::APB2ENR::SYSCFGEN::Enable::Set();
   
   return 1;
  }
@@ -746,44 +771,28 @@ extern "C" {
     RCC::PLLCFGR::PLLSRC::HseSource::Set(); // Выбор HSE в качестве источника для ФАПЧ
     
     // Установка битов PLLN
-    RCC::PLLCFGR::PLLN0::Set(1U);
-    RCC::PLLCFGR::PLLN1::Set(1U);
-    RCC::PLLCFGR::PLLN2::Set(1U);
-    RCC::PLLCFGR::PLLN3::Set(1U);
-    RCC::PLLCFGR::PLLN4::Set(0U);
-    RCC::PLLCFGR::PLLN5::Set(0U);
-    RCC::PLLCFGR::PLLN6::Set(0U);
-    RCC::PLLCFGR::PLLN7::Set(1U);
-    RCC::PLLCFGR::PLLN8::Set(0U);
+    RCC::PLLCFGR::PLLN0::Set(0b010010000);
     
     // Установка битов PLLP
-    RCC::PLLCFGR::PLLP0::Set(0U);
-    RCC::PLLCFGR::PLLP1::Set(0U);
+    RCC::PLLCFGR::PLLP0::Set(0);
     
     // Установка битов PLLM
-    RCC::PLLCFGR::PLLM0::Set(0U);
-    RCC::PLLCFGR::PLLM1::Set(1U);
-    RCC::PLLCFGR::PLLM2::Set(0U);
-    RCC::PLLCFGR::PLLM3::Set(1U);
-    RCC::PLLCFGR::PLLM4::Set(0U);
-    RCC::PLLCFGR::PLLM5::Set(1U);
+    RCC::PLLCFGR::PLLM0::Set(0b000101010);
     
-    RCC::CR::HSION::Off::Set(); // Выключение HSI
+    RCC::CR::PLLON::On::Set();
     
-    RCC::CR::PLLON::On::Set(); // Включение PLL
-    
-    while (RCC::CR::PLLRDY::Unclocked::IsSet()) // Проверка готовности
+    while (RCC::CR::PLLRDY::Unclocked::IsSet())
     {
       
     }
     
-    RCC::CFGR::SW::Pll::Set(); // Выбор PLL в качестве системной частоты
-    while (!RCC::CFGR::SWS::Pll::IsSet()) // Проверка готовности
+    RCC::CFGR::SW::Pll::Set();
+    while (!RCC::CFGR::SWS::Pll::IsSet())
     {
       
     }
     
-    RCC::APB2ENR::SYSCFGEN::Enable::Set();
+    //RCC::APB2ENR::SYSCFGEN::Enable::Set();
     
     return 1;
   }
@@ -791,7 +800,21 @@ extern "C" {
 }
 ----
 
-Таким образом, была установлена тактовая частота 13,666 МГц.
+Для проверки корректности установления тактовой частоты, сосчитаем количество миганий светодиода за 10 секунд.
+
+Оказалось, что за 10 секунд светодиоды мигают 27 раз.
+
+Тогда, можно воспользоваться формулой:
+
+====
+Fтактирования = (1000000 * 27) / 2 = 13 500 000
+====
+
+Число 1000000 - это число тактов задержки, т.е. значение, записанное в функцию delay().
+
+Деление на 2 обусловлено тем, что на обработку включения и выключения светодиодов нужно два такта задержки.
+
+Таким образом, было установлено, что тактовая частота действительно примерно равна 13,666 МГц.
 
 == Вывод
 
