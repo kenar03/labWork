@@ -200,7 +200,6 @@ void delay(std::uint32_t timeInMs)
   // 4. Включить системный таймер в регистре CTRL
   STK::CTRL::ENABLE::Enable::Set();
   
-  // Дождаться готовности флага PENDSTSET в регистре ICSR - дождем конца задержки
   while(STK::CTRL::COUNTFLAG::NoOverflow::IsSet())    
   {    
   }    
@@ -437,8 +436,7 @@ void delay(std::uint32_t timeInMs)
   while(TIM5::SR::UIF::NoInterruptPending::IsSet()) 
   {
   }
-  TIM5::CR1::CEN::Disable::Set(); 
-  TIM5::SR::UIF::Set(0); 
+  TIM5::CR1::CEN::Disable::Set();
 }
 
 
