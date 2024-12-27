@@ -477,16 +477,17 @@ class Button : public IButton
 public:
   bool IsPressed() override
   {
-    if(IsButtonPressed() && (lastButtonState == 0))
+    const auto isButtonPressed = IsButtonPressed();
+    if(isButtonPressed && (lastButtonState == false))
     {
-      lastButtonState = 1;
-      return 1;
+      lastButtonState = true;
+      return true;
     }
-    else if (!IsButtonPressed())
+    else if (!isButtonPressed)
     {
-      lastButtonState = 0;
+      lastButtonState = false;
     }
-    return 0;
+    return false;
   }
 private:
   bool IsButtonPressed()
@@ -494,7 +495,7 @@ private:
     auto portState = Tport::IDR::Get();
     return ((portState & (1 << pinNumber)) == 0);
   }
-  bool lastButtonState = 0;
+  bool lastButtonState = false;
 };
 
 #endif
