@@ -1,0 +1,229 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM         19/Dec/2024  14:58:19
+# Copyright 1999-2022 IAR Systems AB.
+#
+#    Cpu mode                     =  thumb
+#    Endian                       =  little
+#    Source file                  =
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\ModeManager.cpp
+#    Command line                 =
+#        -f
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes\ModeManager.o.rsp
+#        (D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\ModeManager.cpp
+#        -lC
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes
+#        -lA
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes
+#        -o
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config
+#        D:\Programs\IAR\arm\inc\c\DLib_Config_Normal.h -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Common\ -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\STM32F411\FieldValues\
+#        -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\STM32F411\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\ -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\CortexM4\
+#        -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\CortexM4\FieldValues\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\ -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Contracts\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\ -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\Contracts\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Config\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\Config\
+#        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Button\ -I
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Button\Contracts\
+#        -On --c++ --no_exceptions --no_rtti) --dependencies=n
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes\ModeManager.o.d
+#    Locale                       =  C
+#    List file                    =
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes\ModeManager.lst
+#    Object file                  =
+#        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes\ModeManager.o
+#    Runtime model:                  
+#      __CPP_Exceptions           =  Disabled
+#      __CPP_Language             =  C++14
+#      __CPP_Library              =  DLib
+#      __CPP_Runtime              =  1
+#      __SystemLibrary            =  DLib
+#      __dlib_file_descriptor     =  0
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\ModeManager.cpp
+      1          #include "ModeManager.h"
+
+   \                                 In section .text, align 2
+   \   __vfp IModeManager::subobject IModeManager() noexcept
+   \                     _ZN12IModeManagerC2Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x0020             MOVS     R0,R4
+   \        0x6   0x.... 0x....      BL       _ZN12IModeManagerC1Ev
+   \        0xA   0xBD10             POP      {R4,PC}
+
+   \                                 In section .text, align 2
+   \   __vfp IModeManager::IModeManager() noexcept
+   \                     _ZN12IModeManagerC1Ev: (+1)
+   \        0x0   0x4770             BX       LR
+
+   \                                 In section .text, align 2
+   \   __vfp IMode *& std::array<IMode *, 3U>::operator[](size_t)
+   \                     _ZNSt5arrayIP5IModeLj3EEixEj: (+1)
+   \        0x0   0xEB00 0x0081      ADD      R0,R0,R1, LSL #+2
+   \        0x4   0x4770             BX       LR
+      2          
+      3          
+
+   \                                 In section .text, align 2, keep-with-next
+   \   __vfp ModeManager::subobject ModeManager(tMode &)
+   \                     _ZN11ModeManagerC2ERSt5arrayIP5IModeLj3EE: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x0020             MOVS     R0,R4
+   \        0x6   0x.... 0x....      BL       _ZN11ModeManagerC1ERSt5arrayIP5IModeLj3EE
+   \        0xA   0xBD10             POP      {R4,PC}
+
+   \                                 In section .text, align 2, keep-with-next
+      4          ModeManager::ModeManager(tMode& modeArr) : modes(modeArr), currentModeIndex(0)
+      5          {  
+   \                     _ZN11ModeManagerC1ERSt5arrayIP5IModeLj3EE: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x0020             MOVS     R0,R4
+   \        0x8   0x.... 0x....      BL       _ZN12IModeManagerC2Ev
+   \        0xC   0x....             LDR.N    R0,??DataTable1
+   \        0xE   0x6020             STR      R0,[R4, #+0]
+   \       0x10   0x6065             STR      R5,[R4, #+4]
+   \       0x12   0x2000             MOVS     R0,#+0
+   \       0x14   0x7220             STRB     R0,[R4, #+8]
+      6          }
+   \       0x16   0x0020             MOVS     R0,R4
+   \       0x18   0xBD32             POP      {R1,R4,R5,PC}
+      7          
+
+   \                                 In section .text, align 2, keep-with-next
+      8          void ModeManager::InitCurrentMode()
+      9          {
+   \                     _ZN11ModeManager15InitCurrentModeEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+     10            modes[currentModeIndex]->Init();
+   \        0x4   0x7A21             LDRB     R1,[R4, #+8]
+   \        0x6   0x6860             LDR      R0,[R4, #+4]
+   \        0x8   0x.... 0x....      BL       _ZNSt5arrayIP5IModeLj3EEixEj
+   \        0xC   0x6800             LDR      R0,[R0, #+0]
+   \        0xE   0x6801             LDR      R1,[R0, #+0]
+   \       0x10   0x6849             LDR      R1,[R1, #+4]
+   \       0x12   0x4788             BLX      R1
+     11          }
+   \       0x14   0xBD10             POP      {R4,PC}
+     12          
+
+   \                                 In section .text, align 2, keep-with-next
+     13          void ModeManager::UpdateCurrentMode()
+     14          {
+   \                     _ZN11ModeManager17UpdateCurrentModeEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+     15            modes[currentModeIndex]->Update();
+   \        0x4   0x7A21             LDRB     R1,[R4, #+8]
+   \        0x6   0x6860             LDR      R0,[R4, #+4]
+   \        0x8   0x.... 0x....      BL       _ZNSt5arrayIP5IModeLj3EEixEj
+   \        0xC   0x6800             LDR      R0,[R0, #+0]
+   \        0xE   0x6801             LDR      R1,[R0, #+0]
+   \       0x10   0x6809             LDR      R1,[R1, #+0]
+   \       0x12   0x4788             BLX      R1
+     16          }
+   \       0x14   0xBD10             POP      {R4,PC}
+     17          
+
+   \                                 In section .text, align 2, keep-with-next
+     18          void ModeManager::SwitchMode()
+     19          {
+   \                     _ZN11ModeManager10SwitchModeEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+     20            currentModeIndex++;
+   \        0x4   0x7A20             LDRB     R0,[R4, #+8]
+   \        0x6   0x1C40             ADDS     R0,R0,#+1
+   \        0x8   0x7220             STRB     R0,[R4, #+8]
+     21            if (currentModeIndex > 2)
+   \        0xA   0x7A20             LDRB     R0,[R4, #+8]
+   \        0xC   0x2803             CMP      R0,#+3
+   \        0xE   0xDB01             BLT.N    ??SwitchMode_0
+     22            {
+     23              currentModeIndex = 0;
+   \       0x10   0x2000             MOVS     R0,#+0
+   \       0x12   0x7220             STRB     R0,[R4, #+8]
+     24            }
+     25            modes[currentModeIndex]->Init();
+   \                     ??SwitchMode_0: (+1)
+   \       0x14   0x7A21             LDRB     R1,[R4, #+8]
+   \       0x16   0x6860             LDR      R0,[R4, #+4]
+   \       0x18   0x.... 0x....      BL       _ZNSt5arrayIP5IModeLj3EEixEj
+   \       0x1C   0x6800             LDR      R0,[R0, #+0]
+   \       0x1E   0x6801             LDR      R1,[R0, #+0]
+   \       0x20   0x6849             LDR      R1,[R1, #+4]
+   \       0x22   0x4788             BLX      R1
+     26          }
+   \       0x24   0xBD10             POP      {R4,PC}
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \        0x0   0x....'....        DC32     _ZTV11ModeManager+0x8
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   IModeManager::IModeManager() noexcept
+       8   IModeManager::subobject IModeManager() noexcept
+         8   -> IModeManager::IModeManager() noexcept
+       8   ModeManager::InitCurrentMode()
+         8   -- Indirect call
+         8   -> std::array<IMode *, 3U>::operator[](size_t)
+      16   ModeManager::ModeManager(tMode &)
+        16   -> IModeManager::subobject IModeManager() noexcept
+       8   ModeManager::SwitchMode()
+         8   -- Indirect call
+         8   -> std::array<IMode *, 3U>::operator[](size_t)
+       8   ModeManager::UpdateCurrentMode()
+         8   -- Indirect call
+         8   -> std::array<IMode *, 3U>::operator[](size_t)
+       8   ModeManager::subobject ModeManager(tMode &)
+         8   -> ModeManager::ModeManager(tMode &)
+       0   std::array<IMode *, 3U>::operator[](size_t)
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       2  IModeManager::IModeManager() noexcept
+      12  IModeManager::subobject IModeManager() noexcept
+      22  ModeManager::InitCurrentMode()
+      26  ModeManager::ModeManager(tMode &)
+      38  ModeManager::SwitchMode()
+      22  ModeManager::UpdateCurrentMode()
+      12  ModeManager::subobject ModeManager(tMode &)
+       6  std::array<IMode *, 3U>::operator[](size_t)
+     112  -- Other
+
+ 
+ 112 bytes in section .rodata
+ 144 bytes in section .text
+ 
+ 124 bytes of CODE  memory (+  20 bytes shared)
+   0 bytes of CONST memory (+ 112 bytes shared)
+
+Errors: none
+Warnings: none

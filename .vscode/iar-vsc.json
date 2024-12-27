@@ -1,0 +1,8 @@
+{
+  "configs": {
+    "${workspaceFolder}\\Code\\iarproject.ewp": "Debug"
+  },
+  "project": {
+    "path": "${workspaceFolder}\\Code\\iarproject.ewp"
+  }
+}

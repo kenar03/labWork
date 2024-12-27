@@ -1,0 +1,15 @@
+"D:\Programs\IAR\arm\bin\armPROC.dll" 
+
+"D:\Programs\IAR\arm\bin\armSTLINK.dll" 
+
+"D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Exe\iarproject.out" 
+
+--plugin="D:\Programs\IAR\arm\bin\armbat.dll" 
+
+--device_macro="D:\Programs\IAR\arm/config/debugger/ST/STM32F4xx.dmac" 
+
+--flash_loader="D:\Programs\IAR\arm/config/flashloader/ST/FlashSTM32F411xE.board" 
+
+
+
+
