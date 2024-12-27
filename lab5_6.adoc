@@ -1,0 +1,822 @@
+= Лабораторная работа №5,6
+Долгов К.М. <КЭ-413>
+:description: Лабораторная работа №5,6
+:toc:
+:toc-title: Оглавление
+:figure-caption: Рисунок
+:table-caption: Таблица
+:imagesdir: lab5_6_images
+:important-caption: ВАЖНО!
+:note-caption: ЗАМЕЧАНИЕ
+
+include::lab5_6_titul.adoc[]
+
+== Создание структуры проекта в IAR
+
+В ходе прошлой лабораторной работы были созданы классы, определяющие режимы работы светодиодов. Однако, все классы размещались в файле *main.cpp*, т.е. в основном файле проекта.
+
+Такая структура проекта является не эффективной, так как:
+. В файле *main.cpp* должны располагаться только действия, их реализация должна располагаться в других местах проекта.
+. Большое количество различных классов, отвечающих за разные действия и расположенных в одном месте, может вызвать путаницу и неудобство.
+
+Организуем структуру проекта следующим образом. Каждый класс будет располагаться в отдельных двух файлах: заголовочном файле формата *.h* и файле формата *.cpp*.
+
+В файле *.h* будет размещаться только объявление класса, а в файле *.cpp* - его реализация. Делается это для того, чтобы при изменении какой-либо части кода проект не пересобирался полностью, а пересобирались лишь те его части, которые были изменены.
+
+Также классы следует разделить на группы по своему функциональному назначению. Например, классы, отвечающие за работу светодиодов, следует расположить в папке _Leds_, за работу режимов - в папку _Modes_ и т.д.
+
+Кроме того, заголовочные файлы должны иметь защиту от повторного включения, которая реализуется в виде:
+
+[source,cpp]
+----
+#ifndef FILENAME_H
+#define FILENAME_H
+
+...
+
+#endif
+----
+
+Перед сборкой проекта компилятор просто добавляет код из заголовочного файла, что может привсти к тому, что код из этого файла будет добавлен несколько раз.
+Чтобы этого не произошло, используется защита от повторного включения.
+
+[IMPORTANT]
+Файлы интерфейсов располагаются в папке *Contracts*
+
+=== Класс Led
+
+.Файл интерфейса *ILed.h*
+[source,cpp]
+----
+#ifndef ILED_H
+#define ILED_H
+
+class ILed
+{
+public:
+  virtual void Light() = 0;  
+  virtual void Switch() = 0;
+};
+
+#endif
+----
+
+[[Led.h]]
+.Файл *Led.h*
+[source,cpp]
+----
+#ifndef LED_H
+#define LED_H
+
+#include "ILed.h" // for ILed
+
+template<typename Tport, int pinNumber>
+class Led : public ILed
+{
+public:        
+  void Light() override
+  {
+    Tport::ODR::Set(1 << pinNumber);
+  }
+  
+  void Switch() override {
+    Tport::ODR::Toggle(1 << pinNumber);
+  }
+};
+
+#endif
+----
+
+[NOTE]
+Если класс является шаблонным (как класс *Led*), то его реализация также должна быть расположена в заголовочном файле *.h*, т.к. каждый отдельно созданный объект шаблонного класса будет считаться объектом отдельного "нового" класса.
+
+Для того, чтобы каждый раз не писать длинную строку массива светодиодов, в файле конфигурации можно задать ей сокращение, которое является удобным для частого использования.
+
+.Файл *LedConfig.h*
+[source,cpp]
+----
+#ifndef LEDCONFIG_H
+#define LEDCONFIG_H
+#include <array> // for std::array
+#include "ILed.h" // for ILed
+
+using tLeds = std::array<ILed*, 4>; // Сокращение
+
+#endif
+----
+[[Led_modes]]
+=== Классы режимов работы светодиодов
+
+В предыдущей лабораторной работе было создано 3 режима работы светодиодов:
+
+* в шахматном порядке;
+* все одновременно;
+* ёлочкой.
+
+Покажем реализацию этих режимов в виде *.h* и *.cpp* файлов.
+
+.Файл интерфейса *IMode.h*
+[source,cpp]
+----
+#ifndef IMODE_H
+#define IMODE_H
+
+class IMode
+    {
+    public:
+      virtual void Update() = 0;
+      virtual void Init() = 0;
+    };
+
+
+#endif
+----
+
+.Файл *chessMode.h*
+[source,cpp]
+----
+#ifndef CHESSMODE_H
+#define CHESSMODE_H
+#include "LedConfig.h" // for tLeds
+#include "IMode.h"
+
+class ChessMode: public IMode
+{
+public:
+  ChessMode(tLeds& ledsArr);
+  void Update() override;
+  void Init() override;
+private:
+  tLeds& leds;
+};
+
+#endif
+----
+
+Как можно заметить, в файле *chessMode.h* класс и его методы только объявляются, их реализации нет.
+
+.Файл *chessMode.cpp*
+[source,cpp]
+----
+#include "chessMode.h"
+
+ChessMode::ChessMode(tLeds& ledsArr): leds(ledsArr)
+{
+}
+void ChessMode::Update()
+{
+  for(auto it: leds)
+  {
+    it->Switch();
+    
+  }
+}
+
+void ChessMode::Init()
+{
+  for(auto it: leds)
+  {
+    it->Light();
+  }
+  for(auto i=0; i< leds.size(); ++i)
+  {
+    if ((i % 2)==0)
+    {
+      leds[i]->Switch();
+    }
+  }
+}
+----
+
+Аналогично реализуются все остальные режимы. Приведу лишь только коды *.h* и *.cpp* файлов.
+
+.Файл *allMode.h*
+[source,cpp]
+----
+#ifndef ALLMODE_H
+#define ALLMODE_H
+#include "LedConfig.h" // for tLeds
+#include "IMode.h"
+
+class AllMode:public IMode
+{
+public:
+  AllMode(tLeds& ledsArr);
+  void Update() override;
+  void Init() override;
+private:
+  tLeds& leds;
+};
+
+#endif
+----
+
+.Файл *allMode.cpp*
+[source,cpp]
+----
+#include "allMode.h" // for tLeds
+
+AllMode::AllMode(tLeds& ledsArr) : leds(ledsArr)
+{
+}
+
+void AllMode::Update()
+{
+  for(auto it: leds)
+  {
+    it -> Switch();
+  }
+}
+
+void AllMode::Init()
+{
+  for(auto it: leds)
+  {
+    it -> Light();
+  }
+}
+----
+
+.Файл *treeMode.h*
+[source,cpp]
+----
+#ifndef TREEMODE_H
+#define TREEMODE_H
+#include "LedConfig.h" // for tLeds
+#include "IMode.h"
+
+class TreeMode:public IMode
+{
+public:
+  TreeMode(tLeds& ledsArr);
+  void Update() override;
+  void Init() override;
+private:
+  tLeds& leds;
+  std::size_t currentLedIndex;
+};
+
+#endif
+----
+
+.Файл *treeMode.cpp*
+[source,cpp]
+----
+#include "treeMode.h"
+
+TreeMode::TreeMode(tLeds& ledsArr): leds(ledsArr)
+{
+  
+}
+
+void TreeMode::Update()
+{
+  leds[currentLedIndex]->Switch();
+  currentLedIndex++;
+  if(currentLedIndex >= leds.size())
+  {
+    currentLedIndex = 0;
+  }
+}
+
+void TreeMode::Init()
+{
+  currentLedIndex = 0;
+  for(auto it: leds)
+  {
+    it->Light();
+  }
+  
+}
+----
+
+Наконец, создадим файл конфигурации.
+
+.Файл *ModesConfig.h*
+[source,cpp]
+----
+#ifndef MODECONFIG_H
+#define MODECONFIG_H
+
+#include "LedConfig.h"
+#include "IMode.h"
+
+using tMode = std::array<IMode*, 3>;
+
+#endif
+----
+
+Таким образом, классы были разбиты на заголовочные файлы и файлы реализации, что значительно упрощает работу с кодом в целом и делает его более понятным.
+
+=== Класс ModeManager
+
+Для всех <<Led_modes, созданных режимов>> необходимо создать класс, управляющий ими назовем этот класс *ModeManager*.
+
+Этот класс отвечает за управление режимами и должен иметь следующие методы:
+
+* Инициализация режима, т.е. задание начального положения светодиодов.
+* Обновление режима, т.е. переключение светодиодов в необходимом порядке.
+* Переключение режима на следующий по порядку.
+
+Нарисуем UML-диаграмму класса <<UML_ModeManager, *ModeManager*>>.
+
+[[UML_ModeManager]]
+.UML-диаграмма класса ModeManager
+[plantuml]
+....
+interface IModeManager {
+  + InitCurrentMode() : void
+  + UpdateCurrentMode() : void
+  + SwitchMode() : void
+}
+
+class ModeManager {
+  + ModeManager(tMode& modes)
+  + InitCurrentMode() : void
+  + UpdateCurrentMode() : void
+  + SwitchMode() : void
+  
+  - modes : tMode&
+  - currentModeIndex : std::uint8_t
+}
+
+IModeManager <|-- ModeManager
+
+interface IMode {
+  + Init() : void
+  + Update() : void
+}
+
+ModeManager o-- IMode
+....
+
+Реализуем интерфейс этого класса.
+
+.Файл *IModeManager.h*
+[source,cpp]
+----
+#ifndef IMODEMANAGER_H
+#define IMODEMANAGER_H
+
+class IModeManager
+{
+public:
+  virtual void InitCurrentMode() = 0;
+  virtual void UpdateCurrentMode() = 0;
+  virtual void SwitchMode() = 0;
+};
+
+#endif
+----
+
+Теперь заголовочный файл.
+
+.Файл *ModeManager.h*
+[source,cpp]
+----
+#ifndef MODEMANAGER_H
+#define MODEMANAGER_H
+
+#include "IModeManager.h"
+#include "ModesConfig.h" // for tMode
+
+class ModeManager : public IModeManager
+{
+public:
+  ModeManager(tMode& modes);
+  void InitCurrentMode() override;
+  void UpdateCurrentMode() override;
+  void SwitchMode() override;
+private:
+  tMode& modes;
+  std::uint8_t currentModeIndex;
+};
+
+#endif
+----
+
+Реализация класса.
+
+.Файл *ModeManager.cpp*
+[source,cpp]
+----
+#include "ModeManager.h"
+
+ModeManager::ModeManager(tMode& modeArr) : modes(modeArr), currentModeIndex(0)
+{  
+}
+
+void ModeManager::InitCurrentMode()
+{
+  modes[currentModeIndex]->Init();
+}
+
+void ModeManager::UpdateCurrentMode()
+{
+  modes[currentModeIndex]->Update();
+}
+
+void ModeManager::SwitchMode()
+{
+  currentModeIndex++;
+  if (currentModeIndex > 2)
+  {
+    currentModeIndex = 0; // Обнуление номера режима, т.к. режимов всего 3
+  }
+  modes[currentModeIndex]->Init();
+}
+----
+
+Работает класс следующим образом.
+
+На входе класса - массив режимов работы светодиодов. Методы инициализации и обновления режимов выполняют соответствующие действия, основываясь на <<Led_modes, ранее созданных классах>>, т.е. они выпонлняют действия инициализации и обновления, но теперь для любого режима, который был реализован.
+
+Метод *SwitchMode()* отвечает за переключение режима. Работает он так: при вызове метода увеличивается счетчик режима *currentModeIndex*, а вновь выбранный режим инициализируется заново.
+
+Лучше всего показать работу класса *ModeManager* можно с помощью кнопки, расположенной на плате. Однако, для нее также придется создать собственный класс.
+
+=== Класс Button
+
+Класс *Button* будет отвечать за работу кнопки, расположенной на плате. Он будет иметь два метода:
+
+* Метод, отслеживающий, нажата ли кнопка в данный момент.
+* Метод, фиксирующий, была ли кнопка нажата.
+
+Данный класс, как и класс <<Led.h, *Led.h*>>, будет являться шаблонным.
+
+Реализуем интерфейс класса *IButton.h*
+
+.Файл *IButton.h*
+[source,cpp]
+----
+#ifndef IBUTTON_H
+#define IBUTTON_H
+
+class IButton
+{
+public:
+  virtual bool IsPressed() = 0;
+};
+
+#endif
+----
+
+Реализуем сам класс *Button*.
+
+.Файл *Button.h*
+[source,cpp]
+----
+#ifndef BUTTON_H
+#define BUTTON_H
+
+#include "IButton.h" // for IButton
+
+template<typename Tport, int pinNumber>
+class Button : public IButton
+{
+public:
+  bool IsPressed() override
+  {
+    const auto isButtonPressed = IsButtonPressed();
+    if(isButtonPressed && (lastButtonState == false))
+    {
+      lastButtonState = true;
+      return true;
+    }
+    else if (!isButtonPressed)
+    {
+      lastButtonState = false;
+    }
+    return false;
+  }
+private:
+  bool IsButtonPressed()
+  {
+    auto portState = Tport::IDR::Get();
+    return ((portState & (1 << pinNumber)) == 0);
+  }
+  bool lastButtonState = false;
+};
+
+#endif
+----
+
+=== Проверка работы всех классов
+
+Проверим работу всех классов. Для этого запрограммируем микроконтроллер так, чтобы при нажатии кнопки на плате переключался режим работы светодиодов.
+
+.Файл *main.cpp*
+[source,cpp]
+----
+#include "rccregisters.hpp" // for RCC
+#include "gpioaregisters.hpp" // for GPIOA
+#include  "gpiocregisters.hpp" // for GPIOС
+
+#include "Led.h"
+#include "allMode.h"
+#include "chessMode.h"
+#include "treeMode.h"
+#include "LedConfig.h"
+#include "ModesConfig.h"
+#include "Button.h"
+#include "ModeManager.h"
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+
+extern "C" {
+  int __low_level_init(void)
+  {
+  //Switch on internal 16 MHz oscillator
+  RCC::CR::HSION::On::Set();
+  while (RCC::CR::HSIRDY::NotReady::IsSet())
+  {
+  
+}
+  //Switch system clock on internal oscillator
+  RCC::CFGR::SW::Hsi::Set();
+  while (!RCC::CFGR::SWS::Hsi::IsSet())
+  {
+  
+}
+  
+  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+  
+  return 1;
+}
+  
+}
+
+void delay(int cycles)
+{
+  for(int i = 0; i < cycles; ++i)    
+  {   
+    // asm volatile("");
+  }    
+}
+
+
+int main()
+{  
+  // Подать тактирование на порт А
+  RCC::AHB1ENR::GPIOAEN::Enable::Set() ;
+  //Подать тактирование на порт С
+  RCC::AHB1ENR::GPIOCEN::Enable::Set() ;
+  //Порт А.5 на вывод
+  GPIOA::MODER::MODER5::Output::Set() ;
+  //Порт С.5, С.8, С.9 на вывод
+  GPIOC::MODER::MODER5::Output::Set() ;
+  GPIOC::MODER::MODER8::Output::Set() ;
+  GPIOC::MODER::MODER9::Output::Set() ;
+  //Порт С.13 на ввод
+  GPIOC::MODER::MODER13::Input::Set();
+  
+  Button<GPIOC, 13> button;
+
+  Led<GPIOC, 5> led1;
+  Led<GPIOC, 8> led2;
+  Led<GPIOC, 9> led3;
+  Led<GPIOA, 5> led4;
+  
+  tLeds leds = {
+    &led1,
+    &led2,
+    &led3,
+    &led4};
+  
+  
+  ChessMode chessmode(leds);
+  AllMode allmode(leds);
+  TreeMode treemode(leds);
+  
+  tMode modes = {
+    &chessmode,
+    &allmode,
+    &treemode
+  };
+
+  ModeManager modeManager(modes);
+  modeManager.InitCurrentMode();
+  
+  for(;;)
+  {
+    modeManager.UpdateCurrentMode();
+
+    if (button.IsPressed())
+    {
+      modeManager.SwitchMode();
+    }
+    delay(1000000);
+  }
+  
+  return 1;
+}
+----
+
+Таким образом, структура проекта в IAR выглядит следующим образом:
+
+.Структура проекта
+image::project_structure.jpg[]
+
+== Тактирование
+
+Для того, чтобы обрабатывать команды, микроконтроллеру необходим источник тактовой частоты. Блок-схема источников частоты микроконтроллера показана на <<freq, рисунке ниже>>.
+
+[[freq]]
+.Источники тактирования
+image::freq.png[]
+
+Существуют следующие генераторы тактовой частоты:
+
+. HSI (High Speed Internal) - внутренний высокочастотный RC-генератор.
+. HSE (high-speed external)  внешний высокочастотный генератор.
+. PLL — система фазовой автоподстройки частоты (ФАПЧ). По сути частота ФАПЧ получается путем прохождения "изначальной" частоты, генерируемой HSE или HSI, через умножители и делители.
+
+Кроме того, существуют также вторичные источники тактовой частоты:
+
+. LSI (low-speed internal) — низкочастотный внутренний RC-генератор на 37 кГц​.
+. LSE (low-speed external) — низкочастотный внешний источник на 32,768 кГц​.
+
+Управление включением тактирования производится с помощью регистра <<CR, *Clock Control register (CR)*>>. Максимальная частота, которую можно установить - *100 МГц*.
+
+.Регистр CR
+image::CR_reg.png[]
+
+Для настройки PLL используется <<PLL, регистр PLLCFGR>>.
+
+[[PLL]]
+.Регистр PLLCFGR
+image::PLL_reg.png[]
+
+Настройка PLL производится по следующей формуле:
+
+[[PLL_formula]]
+====
+f = f(PLL clock input) × (PLLN / PLLM) /PLLP​
+====
+
+Задавая значения PLLN, PLLM и PLLP в регистре *PLLCFGR*, можно задать произволбную частоту тактирования вплоть до 100 МГц.
+
+За выбор источника системной частоты отвечает <<RC_CFGR, регистр RC_CFGR>>.
+
+[[RC_CFGR]]
+.Регистр RC_CFGR
+image::RC_CFGR.png[]
+
+=== Выбор HSI в качестве генератора тактовой частоты
+
+Для того, чтобы выбрать генератор тактовой частоты, нужно обратиться к соответствующему биту регистра CR. В данном случае, за включение HSI отвечает HSION (бит 0). Далее, необходимо проверить, что HSI включен и готов к работе. Для этого существует бит HSIRDY (бит 1).
+
+Покажем код, запускающий тактирование от HSI.
+
+[source, cpp]
+----
+std::uint32_t SystemCoreClock = 16'000'000U; // Указание тактовой частоты
+
+extern "C" {
+ int __low_level_init(void)
+ {
+  RCC::CR::HSION::On::Set();
+  while (RCC::CR::HSIRDY::NotReady::IsSet())
+  {
+  
+  }
+ 
+  RCC::CFGR::SW::Hsi::Set();
+  while (!RCC::CFGR::SWS::Hsi::IsSet())
+  {
+  
+  }
+  
+  //RCC::APB2ENR::SYSCFGEN::Enable::Set(); // Подать тактирование на контроллер конфигурации системы 
+  
+  return 1;
+ }
+}
+----
+
+Стоит отметить, что в случае использования внутреннего источника, значение тактовой частоты равно 16 МГц.
+
+=== Выбор HSE в качестве генератора тактовой частоты
+
+В данном случае необходимо, прежде всего, отключить HSI, который запускается микроконтроллером по умолчанию в начале программы (сбросить бит HSION). Затем, необходимо установить бит HSEON и проверить готовность генератора битом HSERDY.
+
+[source, cpp]
+----
+std::uint32_t SystemCoreClock = 8'000'000U;
+
+extern "C" {
+ int __low_level_init(void)
+ {
+  RCC::CR::HSEON::On::Set();
+  while (RCC::CR::HSERDY::NotReady::IsSet())
+  {
+  
+  }
+ 
+  RCC::CFGR::SW::Hse::Set();
+  while (!RCC::CFGR::SWS::Hse::IsSet())
+  {
+  
+  }
+  
+  //RCC::APB2ENR::SYSCFGEN::Enable::Set();
+  
+  return 1;
+ }
+}
+----
+
+В случае использования внешнего источника частоты, значение тактовой частоты равно 8 МГц.
+
+=== Выбор PLL в качестве генератора тактовой частоты
+
+Прежде, чем включать PLL, его необходимо настроить. Производится настройка с помощью <<PLL ,регистра PLLCFGR>>. Стоит отметить, что всю настройку нужно производить до того, как PLL будет включен и до того, как HSI будет выключен.
+
+Согласно <<PLL_formula, формуле>>, необходимо определить значения PLLM, PLLN, PLLP. В качестве источника частоты для PLL используем внешний генератор HSE, т.е. 8 МГц. Устанавливаемая частота - 13,666 МГц.
+
+Зададим PLLN = 2, тогда:
+
+====
+(13,666/8)*2 = PLLN/PLLM
+====
+
+Теперь зададим PLLM = 42, тогда:
+
+====
+PLLN = (13,666/8)*2*42 = 144
+====
+
+Стоит учитывать, что для PLLN, PLLM и PLLP существуют ограничения по выбору чисел, которые представлены в расширенной документации к микроконтроллеру.
+
+Переведем эти величины в двоичнуюсистему счисления (для PLLP значению 2 соответствуют биты 00):
+
+====
+PLLN = 010010000
+
+PLLM = 000101010
+
+PLLP = 00
+====
+
+Теперь эти значения необходимо задать в регистр PLLCFGR побитно. Ниже представлен код.
+
+[source, cpp]
+----
+std::uint32_t SystemCoreClock = 13'666'000U;
+
+extern "C" {
+  
+  int __low_level_init(void)
+  {
+    
+    RCC::PLLCFGR::PLLSRC::HseSource::Set(); // Выбор HSE в качестве источника для ФАПЧ
+    
+    // Установка битов PLLN
+    RCC::PLLCFGR::PLLN0::Set(0b010010000);
+    
+    // Установка битов PLLP
+    RCC::PLLCFGR::PLLP0::Set(0);
+    
+    // Установка битов PLLM
+    RCC::PLLCFGR::PLLM0::Set(0b000101010);
+    
+    RCC::CR::PLLON::On::Set();
+    
+    while (RCC::CR::PLLRDY::Unclocked::IsSet())
+    {
+      
+    }
+    
+    RCC::CFGR::SW::Pll::Set();
+    while (!RCC::CFGR::SWS::Pll::IsSet())
+    {
+      
+    }
+    
+    //RCC::APB2ENR::SYSCFGEN::Enable::Set();
+    
+    return 1;
+  }
+  
+}
+----
+
+Для проверки корректности установления тактовой частоты, сосчитаем количество миганий светодиода за 10 секунд.
+
+Оказалось, что за 10 секунд светодиоды мигают 27 раз.
+
+Тогда, можно воспользоваться формулой:
+
+====
+Fтактирования = (1000000 * 27) / 2 = 13 500 000
+====
+
+Число 1000000 - это число тактов задержки, т.е. значение, записанное в функцию delay().
+
+Деление на 2 обусловлено тем, что на обработку включения и выключения светодиодов нужно два такта задержки.
+
+Таким образом, было установлено, что тактовая частота действительно примерно равна 13,666 МГц.
+
+== Вывод
+
+Таким образом, в ходе лабораторных работ были созданы классы, предназначенные для управления режимами мигания светодиодов, а также для управления кнопкой. Кроме того, были изучены различные источники  тактовой частоты (HSI, HSE, PLL).
