@@ -1,0 +1,645 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM         22/Mar/2025  15:45:30
+# Copyright 1999-2022 IAR Systems AB.
+#
+#    Cpu mode                     =  thumb
+#    Endian                       =  little
+#    Source file                  =
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\ADC.cpp
+#    Command line                 =
+#        -f
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\ADC\ADC.o.rsp
+#        (D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\ADC.cpp
+#        -lC
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\ADC
+#        -lA
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\ADC
+#        -o
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\ADC
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config
+#        D:\Programs\IAR\arm\inc\c\DLib_Config_Normal.h -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Common\ -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\CortexM4\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\CortexM4\FieldValues\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Contracts\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Contracts\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Config\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Config\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Button\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Button\Contracts\
+#        -I D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\Contracts\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Timers\
+#        -I
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Config\
+#        -On --c++ --no_exceptions --no_rtti) --dependencies=n
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\ADC\ADC.o.d
+#    Locale                       =  C
+#    List file                    =
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\ADC\ADC.lst
+#    Object file                  =
+#        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\ADC\ADC.o
+#    Runtime model:                  
+#      __CPP_Exceptions           =  Disabled
+#      __CPP_Language             =  C++14
+#      __CPP_Library              =  DLib
+#      __CPP_Runtime              =  1
+#      __SystemLibrary            =  DLib
+#      __dlib_file_descriptor     =  0
+#      __dlib_full_locale_support =  0
+#      __dlib_version             =  6
+#
+###############################################################################
+
+D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\ADC.cpp
+      1          #include "ADC.h" // for ADC
+
+   \                                 In section .text, align 2
+   \   __vfp IADC::subobject IADC() noexcept
+   \                     _ZN4IADCC2Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x0020             MOVS     R0,R4
+   \        0x6   0x.... 0x....      BL       _ZN4IADCC1Ev
+   \        0xA   0xBD10             POP      {R4,PC}
+
+   \                                 In section .text, align 2
+   \   __vfp IADC::IADC() noexcept
+   \                     _ZN4IADCC1Ev: (+1)
+   \        0x0   0x4770             BX       LR
+      2          #include "adc1registers.hpp" // for ADC CR1
+
+   \                                 In section .text, align 4
+   \   __vfp void RegisterField<ADC1::SQR3, 0U, 5U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+   \                     _ZN13RegisterFieldIN4ADC14SQR3ELj0ELj5E13ReadWriteModevE3SetIS2_vEEvj: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x2C10             CMP      R4,#+16
+   \        0x6   0xD306             BCC.N    ??Set_11
+   \        0x8   0x221E             MOVS     R2,#+30
+   \        0xA   0x4906             LDR.N    R1,??Set_0
+   \        0xC   0x4806             LDR.N    R0,??Set_0+0x4
+   \        0xE   0x.... 0x....      BL       __aeabi_assert
+   \       0x12   0x.... 0x....      BL       __iar_EmptyStepPoint
+   \                     ??Set_11: (+1)
+   \       0x16   0x4905             LDR.N    R1,??Set_0+0x8
+   \       0x18   0x6808             LDR      R0,[R1, #+0]
+   \       0x1A   0x0940             LSRS     R0,R0,#+5
+   \       0x1C   0x0140             LSLS     R0,R0,#+5
+   \       0x1E   0x4320             ORRS     R0,R4,R0
+   \       0x20   0x6008             STR      R0,[R1, #+0]
+   \       0x22   0xBD10             POP      {R4,PC}
+   \                     ??Set_0:
+   \       0x24   0x....'....        DC32     _ZZN13RegisterFieldIN4ADC14SQR3ELj0ELj5E13ReadWriteModevE3SetIS2_vEEvjEs_0
+   \       0x28   0x....'....        DC32     _ZZN13RegisterFieldIN4ADC14SQR3ELj0ELj5E13ReadWriteModevE3SetIS2_vEEvjEs
+   \       0x2C   0x4001'2034        DC32     0x40012034
+
+   \                                 In section .text, align 4
+   \   __vfp uint32_t RegisterField<ADC1::DR, 0U, 16U, ReadMode>::Get<ReadMode, void>()
+   \                     _ZN13RegisterFieldIN4ADC12DRELj0ELj16E8ReadModevE3GetIS2_vEEjv: (+1)
+   \        0x0   0x4801             LDR.N    R0,??Get_0
+   \        0x2   0x6800             LDR      R0,[R0, #+0]
+   \        0x4   0xB280             UXTH     R0,R0
+   \        0x6   0x4770             BX       LR
+   \                     ??Get_0:
+   \        0x8   0x4001'204C        DC32     0x4001204c
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI20ADC1_CR2_ADON_ValuesIN4ADC13CR2ELj0ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj0EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_1
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0x0842             LSRS     R2,R0,#+1
+   \        0x6   0x0052             LSLS     R2,R2,#+1
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_1:
+   \        0xC   0x4001'2008        DC32     0x40012008
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR1_RES_Values<ADC1::CR1, 24U, 2U, ReadWriteMode, ADC1::ADC1CR1Base>, ADC1::ADC1CR1Base, 0U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI19ADC1_CR1_RES_ValuesIN4ADC13CR1ELj24ELj2E13ReadWriteModeNS1_11ADC1CR1BaseEES4_Lj0EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_2
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF030 0x7240      BICS     R2,R0,#0x3000000
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_2:
+   \        0xC   0x4001'2004        DC32     0x40012004
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR2_EOCS_Values<ADC1::CR2, 10U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI20ADC1_CR2_EOCS_ValuesIN4ADC13CR2ELj10ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_3
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF450 0x6280      ORRS     R2,R0,#0x400
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_3:
+   \        0xC   0x4001'2008        DC32     0x40012008
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR2_CONT_Values<ADC1::CR2, 1U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI20ADC1_CR2_CONT_ValuesIN4ADC13CR2ELj1ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj0EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_4
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF030 0x0202      BICS     R2,R0,#0x2
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_4:
+   \        0xC   0x4001'2008        DC32     0x40012008
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_SQR1_L_Values<ADC1::SQR1, 20U, 4U, ReadWriteMode, ADC1::ADC1SQR1Base>, ADC1::ADC1SQR1Base, 0U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI18ADC1_SQR1_L_ValuesIN4ADC14SQR1ELj20ELj4E13ReadWriteModeNS1_12ADC1SQR1BaseEES4_Lj0EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_5
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF430 0x0270      BICS     R2,R0,#0xF00000
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_5:
+   \        0xC   0x4001'202C        DC32     0x4001202c
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC_Common_CCR_TSVREFE_Values<ADC_Common::CCR, 23U, 1U, ReadWriteMode, ADC_Common::ADC_CommonCCRBase>, ADC_Common::ADC_CommonCCRBase, 1U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI29ADC_Common_CCR_TSVREFE_ValuesIN10ADC_Common3CCRELj23ELj1E13ReadWriteModeNS1_17ADC_CommonCCRBaseEES4_Lj1EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_6
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF450 0x0200      ORRS     R2,R0,#0x800000
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_6:
+   \        0xC   0x4001'2304        DC32     0x40012304
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI20ADC1_CR2_ADON_ValuesIN4ADC13CR2ELj0ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_7
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF050 0x0201      ORRS     R2,R0,#0x1
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_7:
+   \        0xC   0x4001'2008        DC32     0x40012008
+
+   \                                 In section .text, align 4
+   \   __vfp void FieldValueBase<ADC1_CR2_SWSTART_Values<ADC1::CR2, 30U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI23ADC1_CR2_SWSTART_ValuesIN4ADC13CR2ELj30ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv: (+1)
+   \        0x0   0x4902             LDR.N    R1,??Set_8
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0xF050 0x4280      ORRS     R2,R0,#0x40000000
+   \        0x8   0x600A             STR      R2,[R1, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_8:
+   \        0xC   0x4001'2008        DC32     0x40012008
+
+   \                                 In section .text, align 4
+   \   __vfp bool FieldValueBase<ADC1_SR_EOC_Values<ADC1::SR, 1U, 1U, ReadWriteMode, ADC1::ADC1SRBase>, ADC1::ADC1SRBase, 1U>::IsSet<ReadWriteMode, void>()
+   \                     _ZN14FieldValueBaseI18ADC1_SR_EOC_ValuesIN4ADC12SRELj1ELj1E13ReadWriteModeNS1_10ADC1SRBaseEES4_Lj1EE5IsSetIS3_vEEbv: (+1)
+   \        0x0   0x4802             LDR.N    R0,??IsSet_0
+   \        0x2   0x6800             LDR      R0,[R0, #+0]
+   \        0x4   0x0840             LSRS     R0,R0,#+1
+   \        0x6   0xF010 0x0001      ANDS     R0,R0,#0x1
+   \        0xA   0x4770             BX       LR
+   \                     ??IsSet_0:
+   \        0xC   0x4001'2000        DC32     0x40012000
+
+   \                                 In section .text, align 4
+   \   __vfp void RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+   \                     _ZN12RegisterBaseILj1073815564ELj32E13ReadWriteModeE3SetIS0_vEEvj: (+1)
+   \        0x0   0x4A02             LDR.N    R2,??Set_9
+   \        0x2   0x6811             LDR      R1,[R2, #+0]
+   \        0x4   0xEA50 0x0301      ORRS     R3,R0,R1
+   \        0x8   0x6013             STR      R3,[R2, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_9:
+   \        0xC   0x4001'200C        DC32     0x4001200c
+
+   \                                 In section .text, align 4
+   \   __vfp void RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+   \                     _ZN12RegisterBaseILj1073815568ELj32E13ReadWriteModeE3SetIS0_vEEvj: (+1)
+   \        0x0   0x4A02             LDR.N    R2,??Set_10
+   \        0x2   0x6811             LDR      R1,[R2, #+0]
+   \        0x4   0xEA50 0x0301      ORRS     R3,R0,R1
+   \        0x8   0x6013             STR      R3,[R2, #+0]
+   \        0xA   0x4770             BX       LR
+   \                     ??Set_10:
+   \        0xC   0x4001'2010        DC32     0x40012010
+
+   \                                 In section .text, align 4
+   \   __vfp uint32_t RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+   \                     _ZN12RegisterBaseILj1073815564ELj32E13ReadWriteModeE3GetIS0_vEEjv: (+1)
+   \        0x0   0x4801             LDR.N    R0,??Get_1
+   \        0x2   0x6800             LDR      R0,[R0, #+0]
+   \        0x4   0x4770             BX       LR
+   \        0x6   0xBF00             Nop
+   \                     ??Get_1:
+   \        0x8   0x4001'200C        DC32     0x4001200c
+
+   \                                 In section .text, align 4
+   \   __vfp uint32_t RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+   \                     _ZN12RegisterBaseILj1073815568ELj32E13ReadWriteModeE3GetIS0_vEEjv: (+1)
+   \        0x0   0x4801             LDR.N    R0,??Get_2
+   \        0x2   0x6800             LDR      R0,[R0, #+0]
+   \        0x4   0x4770             BX       LR
+   \        0x6   0xBF00             Nop
+   \                     ??Get_2:
+   \        0x8   0x4001'2010        DC32     0x40012010
+      3          #include "adccommonregisters.hpp" // for ADC Common CCR
+      4          
+
+   \                                 In section .text, align 2, keep-with-next
+   \   __vfp ADC::subobject ADC()
+   \                     _ZN3ADCC2Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x0020             MOVS     R0,R4
+   \        0x6   0x.... 0x....      BL       _ZN3ADCC1Ev
+   \        0xA   0xBD10             POP      {R4,PC}
+
+   \                                 In section .text, align 2, keep-with-next
+      5          ADC::ADC() : channel(0), is_initialized(false) {}
+   \                     _ZN3ADCC1Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x0020             MOVS     R0,R4
+   \        0x6   0x.... 0x....      BL       _ZN4IADCC2Ev
+   \        0xA   0x....             LDR.N    R0,??DataTable3_5
+   \        0xC   0x6020             STR      R0,[R4, #+0]
+   \        0xE   0x2000             MOVS     R0,#+0
+   \       0x10   0x6060             STR      R0,[R4, #+4]
+   \       0x12   0x2000             MOVS     R0,#+0
+   \       0x14   0x7220             STRB     R0,[R4, #+8]
+   \       0x16   0x0020             MOVS     R0,R4
+   \       0x18   0xBD10             POP      {R4,PC}
+      6          
+
+   \                                 In section .text, align 2, keep-with-next
+      7          void ADC::Init(uint32_t ch)
+      8          {
+   \                     _ZN3ADC4InitEj: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+      9              if (is_initialized)
+   \        0x6   0x7A20             LDRB     R0,[R4, #+8]
+   \        0x8   0x2800             CMP      R0,#+0
+   \        0xA   0xD003             BEQ.N    ??Init_0
+     10              {
+     11                  // Отключить АЦП
+     12                  ADC1::CR2::ADON::Disable::Set();
+   \        0xC   0x.... 0x....      BL       _ZN14FieldValueBaseI20ADC1_CR2_ADON_ValuesIN4ADC13CR2ELj0ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj0EE3SetIS3_vEEvv
+     13                  is_initialized = false;
+   \       0x10   0x2000             MOVS     R0,#+0
+   \       0x12   0x7220             STRB     R0,[R4, #+8]
+     14              }
+     15          
+     16              channel = ch;
+   \                     ??Init_0: (+1)
+   \       0x14   0x6065             STR      R5,[R4, #+4]
+     17              // Настройка разрешения (12 бит)
+     18              ADC1::CR1::RES::Bits12::Set();
+   \       0x16   0x.... 0x....      BL       _ZN14FieldValueBaseI19ADC1_CR1_RES_ValuesIN4ADC13CR1ELj24ELj2E13ReadWriteModeNS1_11ADC1CR1BaseEES4_Lj0EE3SetIS3_vEEvv
+     19              // Настройка режима преобразования (однократное, выбор по каналу)
+     20              ADC1::CR2::EOCS::SingleConversion::Set();
+   \       0x1A   0x.... 0x....      BL       _ZN14FieldValueBaseI20ADC1_CR2_EOCS_ValuesIN4ADC13CR2ELj10ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv
+     21              ADC1::CR2::CONT::SingleConversion::Set();
+   \       0x1E   0x.... 0x....      BL       _ZN14FieldValueBaseI20ADC1_CR2_CONT_ValuesIN4ADC13CR2ELj1ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj0EE3SetIS3_vEEvv
+     22              ADC1::SQR1::L::Conversions1::Set();
+   \       0x22   0x.... 0x....      BL       _ZN14FieldValueBaseI18ADC1_SQR1_L_ValuesIN4ADC14SQR1ELj20ELj4E13ReadWriteModeNS1_12ADC1SQR1BaseEES4_Lj0EE3SetIS3_vEEvv
+     23              
+     24              // Установка канала в SQR3
+     25              ADC1::SQR3::SQ1::Set(channel);
+   \       0x26   0x6860             LDR      R0,[R4, #+4]
+   \       0x28   0x.... 0x....      BL       _ZN13RegisterFieldIN4ADC14SQR3ELj0ELj5E13ReadWriteModevE3SetIS2_vEEvj
+     26          
+     27              // Настройка времени выборки (84 цикла)
+     28              if (channel < 10)
+   \       0x2C   0x6860             LDR      R0,[R4, #+4]
+   \       0x2E   0x280A             CMP      R0,#+10
+   \       0x30   0xD212             BCS.N    ??Init_1
+     29              {
+     30                  uint32_t smpr2 = ADC1::SMPR2::Get();
+   \       0x32   0x.... 0x....      BL       _ZN12RegisterBaseILj1073815568ELj32E13ReadWriteModeE3GetIS0_vEEjv
+   \       0x36   0x0006             MOVS     R6,R0
+     31                  smpr2 &= ~(0b111 << (3 * channel)); // Очистка бит SMPx
+   \       0x38   0x2107             MOVS     R1,#+7
+   \       0x3A   0x6862             LDR      R2,[R4, #+4]
+   \       0x3C   0x2003             MOVS     R0,#+3
+   \       0x3E   0x4342             MULS     R2,R0,R2
+   \       0x40   0x4091             LSLS     R1,R1,R2
+   \       0x42   0x438E             BICS     R6,R6,R1
+     32                  smpr2 |= (0b100 << (3 * channel));  // 84 цикла (0b100)
+   \       0x44   0x2104             MOVS     R1,#+4
+   \       0x46   0x6862             LDR      R2,[R4, #+4]
+   \       0x48   0x2003             MOVS     R0,#+3
+   \       0x4A   0x4342             MULS     R2,R0,R2
+   \       0x4C   0x4091             LSLS     R1,R1,R2
+   \       0x4E   0x430E             ORRS     R6,R1,R6
+     33                  ADC1::SMPR2::Set(smpr2);
+   \       0x50   0x0030             MOVS     R0,R6
+   \       0x52   0x.... 0x....      BL       _ZN12RegisterBaseILj1073815568ELj32E13ReadWriteModeE3SetIS0_vEEvj
+   \       0x56   0xE013             B.N      ??Init_2
+     34              }
+     35              else
+     36              {
+     37                  uint32_t smpr1 = ADC1::SMPR1::Get();
+   \                     ??Init_1: (+1)
+   \       0x58   0x.... 0x....      BL       _ZN12RegisterBaseILj1073815564ELj32E13ReadWriteModeE3GetIS0_vEEjv
+   \       0x5C   0x0006             MOVS     R6,R0
+     38                  uint32_t index = channel - 10;
+   \       0x5E   0x6867             LDR      R7,[R4, #+4]
+   \       0x60   0x3F0A             SUBS     R7,R7,#+10
+     39                  smpr1 &= ~(0b111 << (3 * index));   // Очистка бит SMPx
+   \       0x62   0x2007             MOVS     R0,#+7
+   \       0x64   0x2103             MOVS     R1,#+3
+   \       0x66   0xFB01 0xF107      MUL      R1,R1,R7
+   \       0x6A   0x4088             LSLS     R0,R0,R1
+   \       0x6C   0x4386             BICS     R6,R6,R0
+     40                  smpr1 |= (0b100 << (3 * index));    // 84 цикла (0b100)
+   \       0x6E   0x2004             MOVS     R0,#+4
+   \       0x70   0x2103             MOVS     R1,#+3
+   \       0x72   0xFB01 0xF107      MUL      R1,R1,R7
+   \       0x76   0x4088             LSLS     R0,R0,R1
+   \       0x78   0x4306             ORRS     R6,R0,R6
+     41                  ADC1::SMPR1::Set(smpr1);
+   \       0x7A   0x0030             MOVS     R0,R6
+   \       0x7C   0x.... 0x....      BL       _ZN12RegisterBaseILj1073815564ELj32E13ReadWriteModeE3SetIS0_vEEvj
+     42              }
+     43          
+     44              // Включение температурного датчика для канала 16
+     45              if ((channel == 16) || (channel == 18))
+   \                     ??Init_2: (+1)
+   \       0x80   0x6860             LDR      R0,[R4, #+4]
+   \       0x82   0x2810             CMP      R0,#+16
+   \       0x84   0xD002             BEQ.N    ??Init_3
+   \       0x86   0x6860             LDR      R0,[R4, #+4]
+   \       0x88   0x2812             CMP      R0,#+18
+   \       0x8A   0xD101             BNE.N    ??Init_4
+     46              {
+     47                  ADC_Common::CCR::TSVREFE::Enable::Set();
+   \                     ??Init_3: (+1)
+   \       0x8C   0x.... 0x....      BL       _ZN14FieldValueBaseI29ADC_Common_CCR_TSVREFE_ValuesIN10ADC_Common3CCRELj23ELj1E13ReadWriteModeNS1_17ADC_CommonCCRBaseEES4_Lj1EE3SetIS3_vEEvv
+     48              }
+     49              // Включение ADC и запуск преобразования
+     50              ADC1::CR2::ADON::Enable::Set();
+   \                     ??Init_4: (+1)
+   \       0x90   0x.... 0x....      BL       _ZN14FieldValueBaseI20ADC1_CR2_ADON_ValuesIN4ADC13CR2ELj0ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv
+     51              ADC1::CR2::SWSTART::On::Set();
+   \       0x94   0x.... 0x....      BL       _ZN14FieldValueBaseI23ADC1_CR2_SWSTART_ValuesIN4ADC13CR2ELj30ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv
+     52          
+     53              is_initialized = true;
+   \       0x98   0x2001             MOVS     R0,#+1
+   \       0x9A   0x7220             STRB     R0,[R4, #+8]
+     54          }
+   \       0x9C   0xBDF1             POP      {R0,R4-R7,PC}
+     55          
+     56          // Проверка готовности данных
+
+   \                                 In section .text, align 2, keep-with-next
+     57          bool ADC::Is_ready()
+     58          {
+   \                     _ZN3ADC8Is_readyEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+     59              return is_initialized && ADC1::SR::EOC::ConversionComplete::IsSet();
+   \        0x4   0x7A20             LDRB     R0,[R4, #+8]
+   \        0x6   0x2800             CMP      R0,#+0
+   \        0x8   0xD005             BEQ.N    ??Is_ready_0
+   \        0xA   0x.... 0x....      BL       _ZN14FieldValueBaseI18ADC1_SR_EOC_ValuesIN4ADC12SRELj1ELj1E13ReadWriteModeNS1_10ADC1SRBaseEES4_Lj1EE5IsSetIS3_vEEbv
+   \        0xE   0x2800             CMP      R0,#+0
+   \       0x10   0xD001             BEQ.N    ??Is_ready_0
+   \       0x12   0x2001             MOVS     R0,#+1
+   \       0x14   0xE000             B.N      ??Is_ready_1
+   \                     ??Is_ready_0: (+1)
+   \       0x16   0x2000             MOVS     R0,#+0
+   \                     ??Is_ready_1: (+1)
+   \       0x18   0xB2C0             UXTB     R0,R0
+   \       0x1A   0xBD10             POP      {R4,PC}
+     60          }
+     61          
+     62          // Получение данных в виде напряжения (в вольтах)
+
+   \                                 In section .text, align 4, keep-with-next
+     63          float ADC::Get_voltage()
+     64          {
+   \                     _ZN3ADC11Get_voltageEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0xED2D 0x8B02      VPUSH    {D8}
+   \        0x6   0x0004             MOVS     R4,R0
+     65              if (!Is_ready())
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x6821             LDR      R1,[R4, #+0]
+   \        0xC   0x6849             LDR      R1,[R1, #+4]
+   \        0xE   0x4788             BLX      R1
+   \       0x10   0x2800             CMP      R0,#+0
+   \       0x12   0xD102             BNE.N    ??Get_voltage_0
+     66              {
+     67                  return 0.0f; // Возвращаем 0, если данные не готовы
+   \       0x14   0xED9F 0x....      VLDR.W   S0,??DataTable3
+   \       0x18   0xE011             B.N      ??Get_voltage_1
+     68              }
+     69          
+     70              uint32_t raw_data = ADC1::DR::DATA::Get(); // Считываем сырые данные
+   \                     ??Get_voltage_0: (+1)
+   \       0x1A   0x.... 0x....      BL       _ZN13RegisterFieldIN4ADC12DRELj0ELj16E8ReadModevE3GetIS2_vEEjv
+   \       0x1E   0xEE08 0x0A90      VMOV     S17,R0
+     71              float voltage = (raw_data * 3.3f) / 4096.0f; // Пересчет в напряжение (0–3.3 В)
+   \       0x22   0xEEB8 0x0A68      VCVT.F32.U32 S0,S17
+   \       0x26   0xEDDF 0x....      VLDR.W   S1,??DataTable3_1
+   \       0x2A   0xEE20 0x0A20      VMUL.F32 S0,S0,S1
+   \       0x2E   0xEDDF 0x....      VLDR.W   S1,??DataTable3_2
+   \       0x32   0xEE80 0x8A20      VDIV.F32 S16,S0,S1
+     72          
+     73              // Перезапуск преобразования
+     74              ADC1::CR2::SWSTART::On::Set();
+   \       0x36   0x.... 0x....      BL       _ZN14FieldValueBaseI23ADC1_CR2_SWSTART_ValuesIN4ADC13CR2ELj30ELj1E13ReadWriteModeNS1_11ADC1CR2BaseEES4_Lj1EE3SetIS3_vEEvv
+     75          
+     76              return voltage;
+   \       0x3A   0xEEB0 0x0A48      VMOV.F32 S0,S16
+   \                     ??Get_voltage_1: (+1)
+   \       0x3E   0xECBD 0x8B02      VPOP     {D8}
+   \       0x42   0xBD10             POP      {R4,PC}
+     77          }
+     78          
+
+   \                                 In section .text, align 4, keep-with-next
+     79          float ADC::Get_temperature()
+     80          {
+   \                     _ZN3ADC15Get_temperatureEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+     81            if (channel != 16 && channel != 18)
+   \        0x4   0x6860             LDR      R0,[R4, #+4]
+   \        0x6   0x2810             CMP      R0,#+16
+   \        0x8   0xD005             BEQ.N    ??Get_temperature_0
+   \        0xA   0x6860             LDR      R0,[R4, #+4]
+   \        0xC   0x2812             CMP      R0,#+18
+   \        0xE   0xD002             BEQ.N    ??Get_temperature_0
+     82            {
+     83              return -1.0f; // Возвращаем ошибку, если канал неподходящий
+   \       0x10   0xEEBF 0x0A00      VMOV.F32 S0,#-1.0
+   \       0x14   0xE011             B.N      ??Get_temperature_1
+     84            }
+     85            
+     86            float voltage = Get_voltage();
+   \                     ??Get_temperature_0: (+1)
+   \       0x16   0x0020             MOVS     R0,R4
+   \       0x18   0x6821             LDR      R1,[R4, #+0]
+   \       0x1A   0x6889             LDR      R1,[R1, #+8]
+   \       0x1C   0x4788             BLX      R1
+   \       0x1E   0xEEF0 0x0A40      VMOV.F32 S1,S0
+     87            float temp = (voltage - 0.76f) / 0.0025f + 25.0f;
+   \       0x22   0xED9F 0x....      VLDR.W   S0,??DataTable3_3
+   \       0x26   0xEE30 0x0A80      VADD.F32 S0,S1,S0
+   \       0x2A   0xED9F 0x....      VLDR.W   S2,??DataTable3_4
+   \       0x2E   0xEE80 0x0A01      VDIV.F32 S0,S0,S2
+   \       0x32   0xEEB3 0x1A09      VMOV.F32 S2,#25.0
+   \       0x36   0xEE30 0x0A01      VADD.F32 S0,S0,S2
+     88            return temp;
+   \                     ??Get_temperature_1: (+1)
+   \       0x3A   0xBD10             POP      {R4,PC}
+     89          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3:
+   \        0x0   0x0000'0000        DC32     0x0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_1:
+   \        0x0   0x4053'3333        DC32     0x40533333
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_2:
+   \        0x0   0x4580'0000        DC32     0x45800000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_3:
+   \        0x0   0xBF42'8F5C        DC32     0xbf428f5c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_4:
+   \        0x0   0x3B23'D70A        DC32     0x3b23d70a
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable3_5:
+   \        0x0   0x....'....        DC32     _ZTV3ADC+0x8
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   ADC::ADC()
+         8   -> IADC::subobject IADC() noexcept
+       8   ADC::Get_temperature()
+         8   -- Indirect call
+      16   ADC::Get_voltage()
+        16   -- Indirect call
+        16   -> FieldValueBase<ADC1_CR2_SWSTART_Values<ADC1::CR2, 30U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+        16   -> RegisterField<ADC1::DR, 0U, 16U, ReadMode>::Get<ReadMode, void>()
+      24   ADC::Init(uint32_t)
+        24   -> FieldValueBase<ADC1_CR1_RES_Values<ADC1::CR1, 24U, 2U, ReadWriteMode, ADC1::ADC1CR1Base>, ADC1::ADC1CR1Base, 0U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_CR2_CONT_Values<ADC1::CR2, 1U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_CR2_EOCS_Values<ADC1::CR2, 10U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_CR2_SWSTART_Values<ADC1::CR2, 30U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC1_SQR1_L_Values<ADC1::SQR1, 20U, 4U, ReadWriteMode, ADC1::ADC1SQR1Base>, ADC1::ADC1SQR1Base, 0U>::Set<ReadWriteMode, void>()
+        24   -> FieldValueBase<ADC_Common_CCR_TSVREFE_Values<ADC_Common::CCR, 23U, 1U, ReadWriteMode, ADC_Common::ADC_CommonCCRBase>, ADC_Common::ADC_CommonCCRBase, 1U>::Set<ReadWriteMode, void>()
+        24   -> RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+        24   -> RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+        24   -> RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+        24   -> RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+        24   -> RegisterField<ADC1::SQR3, 0U, 5U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+       8   ADC::Is_ready()
+         8   -> FieldValueBase<ADC1_SR_EOC_Values<ADC1::SR, 1U, 1U, ReadWriteMode, ADC1::ADC1SRBase>, ADC1::ADC1SRBase, 1U>::IsSet<ReadWriteMode, void>()
+       8   ADC::subobject ADC()
+         8   -> ADC::ADC()
+       0   FieldValueBase<ADC1_CR1_RES_Values<ADC1::CR1, 24U, 2U, ReadWriteMode, ADC1::ADC1CR1Base>, ADC1::ADC1CR1Base, 0U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_CR2_CONT_Values<ADC1::CR2, 1U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_CR2_EOCS_Values<ADC1::CR2, 10U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_CR2_SWSTART_Values<ADC1::CR2, 30U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_SQR1_L_Values<ADC1::SQR1, 20U, 4U, ReadWriteMode, ADC1::ADC1SQR1Base>, ADC1::ADC1SQR1Base, 0U>::Set<ReadWriteMode, void>()
+       0   FieldValueBase<ADC1_SR_EOC_Values<ADC1::SR, 1U, 1U, ReadWriteMode, ADC1::ADC1SRBase>, ADC1::ADC1SRBase, 1U>::IsSet<ReadWriteMode, void>()
+       0   FieldValueBase<ADC_Common_CCR_TSVREFE_Values<ADC_Common::CCR, 23U, 1U, ReadWriteMode, ADC_Common::ADC_CommonCCRBase>, ADC_Common::ADC_CommonCCRBase, 1U>::Set<ReadWriteMode, void>()
+       0   IADC::IADC() noexcept
+       8   IADC::subobject IADC() noexcept
+         8   -> IADC::IADC() noexcept
+       0   RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+       0   RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+       0   RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+       0   RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+       0   RegisterField<ADC1::DR, 0U, 16U, ReadMode>::Get<ReadMode, void>()
+       8   RegisterField<ADC1::SQR3, 0U, 5U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+         8   -> __aeabi_assert
+         8   -> __iar_EmptyStepPoint
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+       4  ??DataTable3_3
+       4  ??DataTable3_4
+       4  ??DataTable3_5
+      26  ADC::ADC()
+      60  ADC::Get_temperature()
+      68  ADC::Get_voltage()
+     158  ADC::Init(uint32_t)
+      28  ADC::Is_ready()
+      12  ADC::subobject ADC()
+      16  FieldValueBase<ADC1_CR1_RES_Values<ADC1::CR1, 24U, 2U, ReadWriteMode, ADC1::ADC1CR1Base>, ADC1::ADC1CR1Base, 0U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_CR2_ADON_Values<ADC1::CR2, 0U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_CR2_CONT_Values<ADC1::CR2, 1U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 0U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_CR2_EOCS_Values<ADC1::CR2, 10U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_CR2_SWSTART_Values<ADC1::CR2, 30U, 1U, ReadWriteMode, ADC1::ADC1CR2Base>, ADC1::ADC1CR2Base, 1U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_SQR1_L_Values<ADC1::SQR1, 20U, 4U, ReadWriteMode, ADC1::ADC1SQR1Base>, ADC1::ADC1SQR1Base, 0U>::Set<ReadWriteMode, void>()
+      16  FieldValueBase<ADC1_SR_EOC_Values<ADC1::SR, 1U, 1U, ReadWriteMode, ADC1::ADC1SRBase>, ADC1::ADC1SRBase, 1U>::IsSet<ReadWriteMode, void>()
+      16  FieldValueBase<ADC_Common_CCR_TSVREFE_Values<ADC_Common::CCR, 23U, 1U, ReadWriteMode, ADC_Common::ADC_CommonCCRBase>, ADC_Common::ADC_CommonCCRBase, 1U>::Set<ReadWriteMode, void>()
+       2  IADC::IADC() noexcept
+      12  IADC::subobject IADC() noexcept
+      12  RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+      16  RegisterBase<1'073'815'564U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+      12  RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Get<ReadWriteMode, void>()
+      16  RegisterBase<1'073'815'568U, 32U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+      12  RegisterField<ADC1::DR, 0U, 16U, ReadMode>::Get<ReadMode, void>()
+      48  RegisterField<ADC1::SQR3, 0U, 5U, ReadWriteMode>::Set<ReadWriteMode, void>(uint32_t)
+     180  -- Other
+
+ 
+ 180 bytes in section .rodata
+ 650 bytes in section .text
+ 
+ 376 bytes of CODE  memory (+ 274 bytes shared)
+   0 bytes of CONST memory (+ 180 bytes shared)
+
+Errors: none
+Warnings: none

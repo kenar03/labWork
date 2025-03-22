@@ -12,11 +12,15 @@
  * Copyright (c) 2018 by South Ural State University
  * Author: Сергей Колодий
  ******************************************************************************/
+#include "timer.h" // for Timer
+#include "ButtonIsPressed.h" // for ButtonIsPressed
+#include "ModeManager.h" // for ModeManager
 
 #pragma language = extended
 #pragma segment = "CSTACK"
 
 extern "C" void __iar_program_start( void );
+extern ModeManager modeManager;
 
 class DummyModule
 {
@@ -86,7 +90,7 @@ extern "C" const tIntVectItem __vector_table[] =
   DummyModule::handler,         //TIM10/TIM1 Update interrupt
   DummyModule::handler,         //TIM11/TIM1 Trigger/Commutation interrupts
   DummyModule::handler,		//TIM1 Capture Compare interrupt
-  DummyModule::handler,         //TIM2  	
+  Timer<TIM2, modeManager>::OverloadHandler,         //TIM2  	
   DummyModule::handler,         //TIM3
   DummyModule::handler,         //TIM4
   DummyModule::handler,         //I2C1 Event
@@ -98,7 +102,7 @@ extern "C" const tIntVectItem __vector_table[] =
   DummyModule::handler,         //USART1
   DummyModule::handler,         //USART2
   0,
-  DummyModule::handler,         //EXTI Line 15..10
+  ButtonIsPressed<modeManager>::HandlePressState,         //EXTI Line 15..10
   DummyModule::handler,         //EXTI Line 17 interrupt / RTC Alarms (A and B) through EXTI line interrupt
   DummyModule::handler,         //EXTI Line 18 interrupt / USB On-The-Go  FS Wakeup through EXTI line interrupt
   0,				//TIM6
@@ -108,7 +112,7 @@ extern "C" const tIntVectItem __vector_table[] =
   DummyModule::handler,         //DMA1 Stream 7 global interrupt fc
   0,
   DummyModule::handler,	        //SDIO global interrupt
-  DummyModule::handler,	        //TIM5 global interrupt
+  Timer<TIM5, modeManager>::OverloadHandler,	        //TIM5 global interrupt
   DummyModule::handler,	        //SPI3 global interrupt
   0,			        // 110
   0,

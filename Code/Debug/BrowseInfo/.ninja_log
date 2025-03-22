@@ -1,46 +1,125 @@
 # ninja log v5
-1	129	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	2fe5451124fa4348
-21	146	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/treeMode.xcl	1faf333a2a5d7e1f
-26	197	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/startupF411RE.xcl	9a23efa20defd28a
-432	530	7563055032916573	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part1.pbi	9cab13cefd786a34
-6	162	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/chessMode.xcl	13aec4e418bdd348
-16	113	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.xcl	956bad8165f6b849
-210	243	7563055030040470	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/startupF411RE.pbi	9ba6d8564c52e6f2
-10	179	7563055020000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/allMode.xcl	a4a9d4dcf5270952
-142	419	7563055031802773	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	b69c55dcb500b69e
-158	430	7563055031907962	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/treeMode.pbi	47a7f062d16ee456
-192	492	7563055032537034	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/allMode.pbi	d87d13660c81a341
-175	486	7563055032479061	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/chessMode.pbi	ad40dff7d93e3b2
-495	592	7563055033543768	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part0.pbi	a16eaea44b627ced
-2	788	7563112524922727	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-2	616	7563112462313606	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-619	720	7563112463350407	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-723	882	7563112464980787	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-1	646	7563112934143093	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-648	750	7563112935196461	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-754	911	7563112936799117	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-914	1752	7563112944871315	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-1	651	7563113102999056	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-654	755	7563113104047452	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-758	914	7563113105639368	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-918	1739	7563113113642004	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-2	598	7563113325171574	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-601	697	7563113326169378	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-701	862	7563113327818744	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-2	783	7563113389540722	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-1	662	7563128133256237	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-664	770	7563128134340654	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-773	931	7563128135953375	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-935	1737	7563128143789341	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-2	712	7570033111370324	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-716	877	7570033113012937	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-880	1097	7570033115215221	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-2	804	7570033181123283	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-1	629	7570034797381743	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-631	728	7570034798372998	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-732	883	7570034799923589	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-887	1709	7570034807940328	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
-1	627	7570048194857620	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
-631	727	7570048195861733	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
-731	876	7570048197344191	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
-880	1754	7570048205863125	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+131	407	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/treeMode.xcl	5f7557d321d920ba
+102	381	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	832637035ef93b73
+62	237	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/startupF411RE.xcl	867f3b580a32b8f5
+126	329	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.xcl	b4d8b46a7ff53ef4
+756	902	7640988059444172	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part1.pbi	231de7eb702e3b99
+88	283	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/chessMode.xcl	d563c509f5479cca
+66	261	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/allMode.xcl	a954dce868f661
+6	522	7642747178845781	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/startupF411RE.pbi	9ba6d8564c52e6f2
+402	732	7640988057734305	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	b69c55dcb500b69e
+429	753	7640988057938722	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/treeMode.pbi	47a7f062d16ee456
+278	650	7640988056914434	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/allMode.pbi	d87d13660c81a341
+301	653	7640988056924507	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Modes/chessMode.pbi	ad40dff7d93e3b2
+1314	2296	7642747196330191	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+7	162	7641034051579340	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part0.pbi	b37f7ce2c74b5f8b
+2	932	7642747182950843	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
+935	1101	7642747184647209	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
+1106	1310	7642747186737201	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
+137	355	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/ADC/ADC.xcl	625b67125bdcaa5f
+376	694	7640988057352582	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/ADC/ADC.pbi	4dc000d335d8c8a0
+3	305	7640988050000000	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Config/Config.xcl	ee6383f0733137e2
+2	618	7641033999512168	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Config/Config.pbi	9bb32a73e48e1640
+1	981	7642747961429796	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
+983	1165	7642747963278798	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
+1168	1387	7642747965488353	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
+1391	2445	7642747975798798	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+2	623	7642752108701217	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/Config/Config.pbi	9bb32a73e48e1640
+626	897	7642752111452228	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part0.pbi	b37f7ce2c74b5f8b
+7	1012	7642752112592851	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
+1014	1193	7642752114403206	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
+1196	1412	7642752116599780	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
+1417	2468	7642752126754231	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+3	1020	7642755206060486	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
+1023	1195	7642755207818152	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
+1198	1403	7642755209897119	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
+1407	2424	7642755219830979	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+241	729	7643399400619988	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Application/ADC/ADC.pbi	4dc000d335d8c8a0
+732	1185	7643399405170935	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part0.pbi	b37f7ce2c74b5f8b
+246	1860	7643399411916329	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/main.pbi	60e347a776dc504c
+1864	2075	7643399414072938	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject_part2.pbi	e03ee26c63cf4ac3
+2079	2420	7643399417523777	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbd	908403a8f6a3f4d2
+2424	3416	7643399427203746	D:/Documents/Homework/GitLab/Lab1_1/Lab1/Debug/BrowseInfo/Backup of iarproject.pbw	2b4e9381bb798b24
+12	124	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.xcl	a25729860ad4f34b
+18	143	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.xcl	5f1532d1ee96abd6
+7	162	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	d0fef596819158e1
+1	182	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.xcl	3470440234cfe707
+29	205	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.xcl	50e9e15066d9823c
+24	226	7643429570000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.xcl	a700d6001db64acf
+139	461	7643429582918270	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.pbi	f709f9daa38ac690
+157	474	7643429583048455	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.pbi	7f3e29edadc343f2
+177	515	7643429583463680	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	aa32cdeffcddeb93
+199	530	7643429583608837	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.pbi	812ea308cc83c308
+519	616	7643429584475379	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part1.pbi	829c86f5f0ab3d8
+533	644	7643429584750763	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part0.pbi	84e5c722579bd833
+244	696	7643429585262539	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.pbi	64edfa78b1edaab6
+221	1364	7643429591949131	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.pbi	aa38c1e83f147d14
+1367	1536	7643429593681035	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	532be2c2b27e58cb
+1540	1735	7643429595665340	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+1740	2712	7643429605173958	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e
+10	108	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.xcl	fa8ca47391894656
+6	132	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	39dac9817a767812
+1	154	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.xcl	e22e04287923fa26
+16	176	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.xcl	eef168ae65bf4374
+22	198	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.xcl	ea617a66e837e9a8
+27	220	7643429930000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.xcl	5a0d1a94faaf6600
+128	244	7643429930527869	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.pbi	f709f9daa38ac690
+172	247	7643429930966358	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.pbi	812ea308cc83c308
+150	254	7643429930748035	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	aa32cdeffcddeb93
+194	257	7643429931192057	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.pbi	7f3e29edadc343f2
+216	265	7643429931407602	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.pbi	64edfa78b1edaab6
+250	269	7643429931592925	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part0.pbi	84e5c722579bd833
+260	272	7643429931708007	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part1.pbi	829c86f5f0ab3d8
+238	1192	7643429940901533	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.pbi	aa38c1e83f147d14
+1195	1330	7643429942289073	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	532be2c2b27e58cb
+1334	1448	7643429943463165	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+1452	2405	7643429952777220	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e
+6	15	7643432600735376	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	fd6ea8e2142fab00
+1	63	7643432600000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/ADC/ADC.xcl	bded3b081b16adc5
+10	135	7643432601931543	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part1.pbi	f6b2c33f0e2bce40
+83	308	7643432603649980	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/ADC/ADC.pbi	7101230140188c6e
+310	359	7643432604171505	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part0.pbi	244caf75a5a6e77c
+365	499	7643432605575476	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+504	1433	7643432614652778	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e
+10	120	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	d0fef596819158e1
+16	139	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.xcl	5f1532d1ee96abd6
+21	159	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.xcl	a25729860ad4f34b
+1	178	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.xcl	3470440234cfe707
+32	196	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.xcl	a700d6001db64acf
+27	215	7643432620000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.xcl	50e9e15066d9823c
+135	429	7643432628287849	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	aa32cdeffcddeb93
+153	462	7643432628623543	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.pbi	7f3e29edadc343f2
+192	471	7643432628703326	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.pbi	812ea308cc83c308
+173	557	7643432629574482	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.pbi	f709f9daa38ac690
+467	565	7643432629604418	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part1.pbi	829c86f5f0ab3d8
+209	615	7643432630164710	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.pbi	64edfa78b1edaab6
+561	655	7643432630558952	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part0.pbi	84e5c722579bd833
+229	1235	7643432636361864	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.pbi	aa38c1e83f147d14
+1237	1394	7643432637951783	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	532be2c2b27e58cb
+1397	1568	7643432639695383	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+1572	2537	7643432649112562	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e
+2	130	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Config/Config.xcl	328aa18e3768cec2
+7	155	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.xcl	ebec427fbfd80bb3
+18	175	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.xcl	6af69de1bb53d4e5
+12	195	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/ADC/ADC.xcl	ed4b609c1a8af77b
+23	215	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.xcl	325feb9d61daaca2
+28	235	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.xcl	acf625977560bc8c
+33	257	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.xcl	f2010839a407d7ae
+39	278	7643435320000000	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.xcl	617145c5ebe3e508
+211	478	7643435326516128	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/ADC/ADC.pbi	7101230140188c6e
+171	493	7643435326672024	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/allMode.pbi	812ea308cc83c308
+251	575	7643435327488400	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/ModeManager.pbi	aa32cdeffcddeb93
+296	596	7643435327698670	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/treeMode.pbi	7f3e29edadc343f2
+273	605	7643435327793799	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Modes/chessMode.pbi	f709f9daa38ac690
+608	746	7643435329201685	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part1.pbi	b9c1fd67a64ef897
+191	809	7643435329836343	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/startupF411RE.pbi	64edfa78b1edaab6
+151	828	7643435330026624	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Application/Config/Config.pbi	65f4ff4918cc2878
+832	994	7643435331686277	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part0.pbi	bb135e79fda4860c
+231	1310	7643435334835469	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.pbi	aa38c1e83f147d14
+1313	1506	7643435336798016	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	532be2c2b27e58cb
+1510	1725	7643435339002287	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+1730	2730	7643435348756162	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e
+2	963	7643436164141768	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/main.pbi	aa38c1e83f147d14
+966	1152	7643436166038682	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject_part2.pbi	532be2c2b27e58cb
+1	211	7643436174586652	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbd	74204c75aa8d188a
+215	1249	7643436184679024	D:/Documents/Homework/GitLab/8semestr/labWork/Code/Debug/BrowseInfo/Backup of iarproject.pbw	c8defe5cb67111e

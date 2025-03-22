@@ -4,6 +4,12 @@
 #include "stkregisters.hpp" // for SystemTimer
 #include "scbregisters.hpp" // for ISCR register
 #include "tim5registers.hpp" // for TIM5
+#include "adc1registers.hpp" // for ADC CR1
+#include "adccommonregisters.hpp" // for ADC Common CCR
+#include "nvicregisters.hpp" // for NVIC
+#include "extiregisters.hpp" // for EXTI
+#include <iostream> // for std::cout
+#include "syscfgregisters.hpp" // for CFGR
 
 #include "Led.h"
 #include "allMode.h"
@@ -13,8 +19,11 @@
 #include "ModesConfig.h"
 #include "Button.h"
 #include "ModeManager.h"
+#include "ADC.h"
+#include "Config.h"
 
 std::uint32_t SystemCoreClock = 16'000'000U;
+Config config;
 
 extern "C" {
   
@@ -30,50 +39,18 @@ extern "C" {
     while (!RCC::CFGR::SWS::Hsi::IsSet())
     {
     }
-    
-    RCC::APB1ENR::TIM5EN::Enable::Set();
-    
+        
+    config.EnableButton();
+    config.EnableLeds();
+    config.EnableADC();    
+    config.EnableTIM5(SystemCoreClock);
     return 1;
   }
 }
 
+Button<GPIOC, 13> button;
 
-void delay(std::uint32_t timeInMs)
-{
-  assert(timeInMs < 10000);
-  const auto prescalerValue = SystemCoreClock / 1000U - 1U;
-  TIM5::PSC::Write(prescalerValue);
-  TIM5::CR1::URS::Value1::Set(); 
-  TIM5::ARR::Write(timeInMs);
-  TIM5::SR::UIF::Set(0); 
-  TIM5::CNT::Write(0); 
-  TIM5::CR1::CEN::Enable::Set(); 
-  while(TIM5::SR::UIF::NoInterruptPending::IsSet()) 
-  {
-  }
-  TIM5::CR1::CEN::Disable::Set(); 
-  TIM5::SR::UIF::Set(0); 
-}
-
-
-int main()
-{  
-  //Подать тактирование на порт А
-  RCC::AHB1ENR::GPIOAEN::Enable::Set() ;
-  //Подать тактирование на порт С
-  RCC::AHB1ENR::GPIOCEN::Enable::Set() ;
-  //Порта А.5 на вывод
-  GPIOA::MODER::MODER5::Output::Set() ;
-  //Порта C.5,C.8, C.9 на вывод
-  GPIOC::MODER::MODER5::Output::Set() ;
-  GPIOC::MODER::MODER8::Output::Set() ;
-  GPIOC::MODER::MODER9::Output::Set() ;
-  
-  GPIOC::MODER::MODER13::Input::Set();
-  
-  Button<GPIOC, 13> button;
-  
-  Led<GPIOC, 5> led1;
+Led<GPIOC, 5> led1;
   Led<GPIOC, 8> led2;
   Led<GPIOC, 9> led3;
   Led<GPIOA, 5> led4;
@@ -83,7 +60,6 @@ int main()
     &led2,
     &led3,
     &led4};
-  
   
   ChessMode chessmode(leds);
   AllMode allmode(leds);
@@ -95,18 +71,21 @@ int main()
     &treemode
   };
   ModeManager modeManager(modes);
+  
+int main()
+{
+  TIM5::CR1::CEN::Enable::Set();
+  ADC adc;
+  adc.Init(0);
+  float temp = 0; // Температура
   modeManager.InitCurrentMode();
-  
   for(;;)
-    
   {
-    modeManager.UpdateCurrentMode();
-    if (button.IsPressed())
-    {
-      modeManager.SwitchMode();
-    }
-    delay(300);
+      while(!adc.Is_ready()) // Готовность АЦП
+      {
+      }
+      temp = adc.Get_voltage(); // Температура платы
+      std::cout << temp << std::endl;
+      
   }
-  
-  return 1;
 }

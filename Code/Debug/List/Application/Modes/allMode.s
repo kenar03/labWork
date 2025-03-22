@@ -1,47 +1,65 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM        19/Dec/2024  14:58:19
+// IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM        22/Mar/2025  15:45:30
 // Copyright 1999-2022 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\allMode.cpp
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\allMode.cpp
 //    Command line =
 //        -f
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes\allMode.o.rsp
-//        (D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\allMode.cpp
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\Modes\allMode.o.rsp
+//        (D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\allMode.cpp
 //        -lC
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\Modes
 //        -lA
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\Modes
 //        -o
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\Modes
 //        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
 //        --no_clustering --no_scheduling --debug --endian=little
 //        --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config
 //        D:\Programs\IAR\arm\inc\c\DLib_Config_Normal.h -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Common\ -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\STM32F411\FieldValues\
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Common\ -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\
 //        -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\STM32F411\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\ -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\CortexM4\
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\
 //        -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\AHardware\Registers\CortexM4\FieldValues\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\ -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Contracts\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\ -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\Contracts\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Config\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\Config\
-//        -I D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Button\ -I
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Button\Contracts\
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\CortexM4\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\CortexM4\FieldValues\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Contracts\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Contracts\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Config\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Config\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Button\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Button\Contracts\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\ADC\Contracts\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Timers\
+//        -I
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Config\
 //        -On --c++ --no_exceptions --no_rtti) --dependencies=n
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\Obj\Application\Modes\allMode.o.d
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\Obj\Application\Modes\allMode.o.d
 //    Locale       =  C
 //    List file    =
-//        D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\List\Application\Modes\allMode.s
+//        D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\List\Application\Modes\allMode.s
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -137,7 +155,7 @@
           CFI D15 SameValue
           CFI EndCommon cfiCommon0
         
-// D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\allMode.cpp
+// D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\allMode.cpp
 //    1 #include "allMode.h" // for tLeds
 
         SECTION `.text`:CODE:REORDER:NOROOT(1)
