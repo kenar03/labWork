@@ -1,0 +1,477 @@
+= Лабораторная работа №9
+Долгов К.М. <КЭ-413>
+:description: Лабораторная работа №9
+:toc:
+:toc-title: Оглавление
+:figure-caption: Рисунок
+:table-caption: Таблица
+:imagesdir: lab9_images
+:important-caption: ВАЖНО!
+:note-caption: ЗАМЕЧАНИЕ
+:lab-num: 9
+
+include::../lab_titul.adoc[]
+
+== Понятие "прерывание"
+
+Прерывание - это механизм, позволяющий миркоконтроллеру мгновенно реагировать на какие-либо события (внутренние или внешние), не тратя ресурсы на постоянный опрос.
+
+Прерывания делятся на:
+
+* внутренние;
+* внешние.
+
+Внутренние прерывания генерируются периферийными устройствами, такими как таймеры, АЦП, интерфейсами (UART, I2C, SPI).
+
+Внешние прерывания обрабатываются с помощью специального контроллера EXTI, который можно настроить так, чтобы он реагировал на изменение состояния определенных GPIO
+
+== Алгоритм настройки прерываний
+
+. Подать тактирование на требуемое периферийное устройство или контроллер EXTI (регистр SYSCFGR).
+. Разрешить глобальные прерывания NVIC для соответствующего устройства.
+. Настроить периферийное устройство (например, настроить режим работы таймера, записать в регистры ARR и PSC необходимые значения) или GPIO.
+. Создать обработчик прерывания - функцию, которая вызывается при срабатывании прерывания.
+. Указать обработчик прерывания в <<vectors, таблице векторов прерываний>> (файл startupF411RE.cpp).
+
+[[vectors]]
+.Таблица векторов прерываний (STM32F411RE)
+image::vector_table_1.png[]
+.Таблица векторов прерываний (STM32F411RE)
+image::vector_table_2.png[]
+.Таблица векторов прерываний (STM32F411RE)
+image::vector_table_3.png[]
+.Таблица векторов прерываний (STM32F411RE)
+image::vector_table_4.png[]
+
+== Глобальные прерывания таймера
+
+Создадим <<tim_interrupt, обработчик прерываний таймера>>. Поскольку в одном обработчике прерываний может обрабатываться несколько разных прерываний, необходимо указать, по какому именно осуществляется обработка. В нашем случае обработка осуществляется по переполнению таймера.
+
+[[tim_interrupt]]
+.Файл timer.h
+[source,cpp]
+----
+#include "tim5registers.hpp" // for TIM5
+#include "tim2registers.hpp" // for TIM2
+#ifndef TIMER_H
+#define TIMER_H
+
+template<typename Ttimer, auto &modeManager>
+class Timer
+{
+public:
+  void static OverloadHandler()
+  {
+    if (Ttimer::SR::UIF::InterruptPending::IsSet() && Ttimer::DIER::UIE::Value1::IsSet()) // по переполнению
+    {
+      modeManager.UpdateCurrentMode();
+      Ttimer::SR::UIF::NoInterruptPending::Set();
+    }
+  }
+};
+
+#endif
+----
+
+Данный класс осуществляет обновление текущего режима мигания светодиодов при переполнении счетчика таймера. После того, как произошло прерывание, основной ход работы приостанавливается, ставится флаг прерывания по переполнению, обновляется текущий режим светодиодов. По окончании обработки флаг прерывания в регистре SR снимается, и основной ход работы программы продолжается.
+
+== Прерывание по нажатию кнопки
+
+Реализуем <<btn_interrupt, обработчик прерывания>>, срабатывающее при нажатии кнопки. Для этого используем контроллер EXTI. На используемой отладочной плате кнопка подключена к пину микроконтроллера *PC13*.
+
+[[btn_interrupt]]
+.Файл ButtonIsPressed.h
+[source,cpp]
+----
+#include "extiregisters.hpp" // for EXTI
+#include  "gpiocregisters.hpp" // for GPIOC
+
+#ifndef BUTTONISPRESSED_H
+#define BUTTONISPRESSED_H
+
+template<auto &modeManager>
+class ButtonIsPressed
+{
+public:
+  void static HandlePressState()
+  {
+    if (EXTI::PR::PR13::Value1::IsSet())
+    {
+        modeManager.SwitchMode();
+        EXTI::PR::PR13::Value1::Set();
+    }
+  }
+};
+
+#endif
+----
+
+Если кнопка была нажата, то в регистре PR устанавливается флаг прерывания EXTI по линии 13. По окончании обработки прерывания флаг снимается, и программа продолжает свою работу.
+
+== Таблица векторов прерываний
+
+Одной только реализации обработчиков прерываний недостаточно. Необходимо также указать их в <<vector_code, таблице векторов прерываний>>, расположенной в файле *startupF411RE.cpp*.
+
+[[vector_code]]
+.Файл startupF411RE.cpp
+[source,cpp]
+----
+/******************************************************************************
+ *  FILENAME: startupF411RE.cpp
+ *  
+ * DESCRIPTION: Ôàéë ñ âåêòîðàìè ïðåðûâàíèÿ äëÿ Cortex-M. äëÿ Ñ++.
+ * Ïîñêîëüêó ïî÷åìó-òî â Cortex-M âñå îáðàáîò÷èêè äîëæíû ïî èìåíè òî÷íî 
+ *  ñîâïàäàòü ñ èìåíà â òàáëèöå âåêòîðîâ, à íàçâàíèå ìåòîäà èç Ñ++ êëàññà 
+ * ñîâïàñòü ñ òàêîé òàáëèöåé ñî ñòàíäðàòíûìè ñòàðòàï ôàéëàìè íèêàê íå ìîæåò
+ * òî âîò ïðèõîäèòüñÿ òàêîé æå ïèñàòü íà Ñ++. 
+ * Âíèìàíèå!!!!!! Èìåíà êëàññîâ òî÷íî äîëæíû ñîâïàäàòü ñ èìåíàìè ó âàñ â ïðîåêòå
+ * Ìîæíî èçìåíèòü è ñîêðàòèòü êîëè÷åñòâî êëàññîâ, åñëè åñòü æåëàíèå, íàïðèìåð
+ *
+ * Copyright (c) 2018 by South Ural State University
+ * Author: Ñåðãåé Êîëîäèé
+ ******************************************************************************/
+#include "timer.h" // for Timer
+#include "ButtonIsPressed.h" // for ButtonIsPressed
+#include "ModeManager.h" // for ModeManager
+
+#pragma language = extended
+#pragma segment = "CSTACK"
+
+extern "C" void __iar_program_start( void );
+extern ModeManager modeManager;
+
+class DummyModule
+{
+  public:
+    static void handler();
+};
+
+using tIntFunct = void(*)();
+//cstat !MISRAC++2008-9-5-1
+using tIntVectItem = union {tIntFunct __fun; void * __ptr;};
+
+// The vector table is normally located at address 0.
+// When debugging in RAM, it can be located in RAM, aligned to at least 2^6.
+// If you need to define interrupt service routines,
+// make a copy of this file and include it in your project.
+// The name "__vector_table" has special meaning for C-SPY:
+// it is where the SP start value is found, and the NVIC vector
+// table register (VTOR) is initialized to this address if != 0.
+
+#pragma location = ".intvec"
+//cstat !MISRAC++2008-0-1-4_b !MISRAC++2008-9-5-1
+extern "C" const tIntVectItem __vector_table[] =
+{
+  { .__ptr = __sfe( "CSTACK" ) },
+  __iar_program_start,
+
+  DummyModule::handler,
+  DummyModule::handler,
+  DummyModule::handler,
+  DummyModule::handler,
+  DummyModule::handler,
+  0,
+  0,
+  0,
+  0,
+  DummyModule::handler,
+  DummyModule::handler,
+  0,
+  DummyModule::handler,
+  DummyModule::handler,
+  //External Interrupts
+  DummyModule::handler,         //Window Watchdog
+  DummyModule::handler,         //PVD through EXTI Line detect/EXTI16
+  DummyModule::handler,         //Tamper and Time Stamp/EXTI21 
+  DummyModule::handler,         //RTC Wakeup/EXTI22 
+  DummyModule::handler,         //FLASH
+  DummyModule::handler,         //RCC
+  DummyModule::handler,         //EXTI Line 0
+  DummyModule::handler,         //EXTI Line 1
+  DummyModule::handler,         //EXTI Line 2
+  DummyModule::handler,         //EXTI Line 3
+  DummyModule::handler,         //EXTI Line 4
+  DummyModule::handler,         //DMA1 Stream 0
+  DummyModule::handler,         //DMA1 Stream 1
+  DummyModule::handler,         //DMA1 Stream 2
+  DummyModule::handler,         //DMA1 Stream 3
+  DummyModule::handler,         //DMA1 Stream 4
+  DummyModule::handler,         //DMA1 Stream 5
+  DummyModule::handler,         //DMA1 Stream 6
+  DummyModule::handler,         //ADC1
+  0,                            //USB High Priority
+  0,                            //USB Low  Priority
+  0,                            //DAC
+  0,                            //COMP through EXTI Line
+  DummyModule::handler,         //EXTI Line 9..5
+  DummyModule::handler,         //TIM9/TIM1 Break interrupt 
+  DummyModule::handler,         //TIM10/TIM1 Update interrupt
+  DummyModule::handler,         //TIM11/TIM1 Trigger/Commutation interrupts
+  DummyModule::handler,		//TIM1 Capture Compare interrupt
+  //-------------------------Глобальное прерывание таймера 2------------------------
+  Timer<TIM2, modeManager>::OverloadHandler,         //TIM2 
+  //-------------------------------------------------------------------------------- 	
+  DummyModule::handler,         //TIM3
+  DummyModule::handler,         //TIM4
+  DummyModule::handler,         //I2C1 Event
+  DummyModule::handler,         //I2C1 Error
+  DummyModule::handler,         //I2C2 Event
+  DummyModule::handler,         //I2C2 Error
+  DummyModule::handler,         //SPI1
+  DummyModule::handler,         //SPI2
+  DummyModule::handler,         //USART1
+  DummyModule::handler,         //USART2
+  0,
+  //-------------------------Прерывание для пинов PR10 - PR15------------------------
+  ButtonIsPressed<modeManager>::HandlePressState,         //EXTI Line 15..10
+  //---------------------------------------------------------------------------------
+  DummyModule::handler,         //EXTI Line 17 interrupt / RTC Alarms (A and B) through EXTI line interrupt
+  DummyModule::handler,         //EXTI Line 18 interrupt / USB On-The-Go  FS Wakeup through EXTI line interrupt
+  0,				//TIM6
+  0,				//TIM7  f0
+  0,
+  0,
+  DummyModule::handler,         //DMA1 Stream 7 global interrupt fc
+  0,
+  DummyModule::handler,	        //SDIO global interrupt
+  //-------------------------Глобальное прерывание таймера 5------------------------
+  Timer<TIM5, modeManager>::OverloadHandler,	        //TIM5 global interrupt
+  //--------------------------------------------------------------------------------
+  DummyModule::handler,	        //SPI3 global interrupt
+  0,			        // 110
+  0,
+  0,
+  0,
+  DummyModule::handler,		//DMA2 Stream0 global interrupt 120
+  DummyModule::handler,		//DMA2 Stream1 global interrupt
+  DummyModule::handler,		//DMA2 Stream2 global interrupt
+  DummyModule::handler,		//DMA2 Stream3 global interrupt
+  DummyModule::handler,		//DMA2 Stream4 global interrupt 130
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  DummyModule::handler,		//USB On The Go FS global interrupt, 14C
+  DummyModule::handler,		//DMA2 Stream5 global interrupt
+  DummyModule::handler,		//DMA2 Stream6 global interrupt
+  DummyModule::handler,		//DMA2 Stream7 global interrupt
+  DummyModule::handler,				//USART6 15C
+  DummyModule::handler,         //I2C3 Event
+  DummyModule::handler,         //I2C3 Error 164
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  DummyModule::handler,		//FPU 184
+  0,
+  0,
+  DummyModule::handler,		//SPI 4 global interrupt
+  DummyModule::handler		//SPI 5 global interrupt
+};
+
+void DummyModule::handler()   { for(;;) {} } ;
+
+extern "C" void __cmain( void );
+extern "C" __weak void __iar_init_core( void );
+extern "C" __weak void __iar_init_vfp( void );
+
+#pragma required=__vector_table
+void __iar_program_start( void )
+{
+  __iar_init_core();
+  __iar_init_vfp();
+  __cmain();
+}
+----
+
+Обработчики прерываний установлены в порядке, указанному в <<vectors, библии>>.
+
+Как можно заметить, в обработчике прерываний установлены "затычки" _DummyModule::handler_. Если возникает прерывание в случаях, где вставлена такая "затычка", то программа зависает навсегда, вплоть до перезагрузки.
+
+== Класс конфигурации устройств
+
+Для обеспечения читаемости кода реализуем простой <<config, класс>>, в котором осуществляется конфигурация всех использованных в предыдущих работах устройств: *таймеров, АЦП, кнопки, светодиодов*. Основная конфигурация АЦП была представлена в ЛР№8, а в этом классе на АЦП только подается тактирование и включается соответствующий пин.
+
+[[config]]
+.Файл Config.h
+[source, cpp]
+----
+#include <cstdint> // for std
+
+#ifndef CONFIG_H
+#define CONFIG_H
+
+class Config
+{
+public:
+  void EnableButton();
+  void EnableTIM5(std::uint32_t clock);
+  void EnableLeds();
+  void EnableADC();
+};
+
+#endif
+----
+
+.Файл Config.c
+[source,cpp]
+----
+#include "Config.h" // for Config
+#include "rccregisters.hpp" // for RCC
+#include  "gpiocregisters.hpp" // for GPIOC
+#include "nvicregisters.hpp" // for NVIC
+#include "extiregisters.hpp" // for EXTI
+#include "syscfgregisters.hpp" // for CFGR
+#include "tim5registers.hpp" // for TIM5
+#include "gpioaregisters.hpp" // for GPIOA
+
+void Config::EnableButton()
+{
+  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+  RCC::AHB1ENR::GPIOCEN::Enable::Set();
+  GPIOC::MODER::MODER13::Input::Set();
+  NVIC::ISER1::Write(1 << 8U);
+  EXTI::FTSR::TR13::Value1::Set();
+  EXTI::RTSR::TR13::Value0::Set();
+  SYSCFG::EXTICR4::EXTI13::Value2::Set();
+  GPIOC::PUPDR::PUPDR13::PullUp::Set();
+  EXTI::IMR::MR13::Value1::Set(); // PC13 Interrupt
+}
+
+void Config::EnableTIM5(std::uint32_t clock)
+{
+  RCC::APB1ENR::TIM5EN::Enable::Set();
+  NVIC::ISER1::Write(1 << 18U); // TIM5 Interrupt - vector 50
+  const auto prescalerValue = clock / 1000U - 1U;
+  TIM5::PSC::Write(prescalerValue);
+  TIM5::CR1::URS::Value1::Set(); 
+  TIM5::ARR::Write(500);
+  TIM5::SR::UIF::NoInterruptPending::Set(); 
+  TIM5::CNT::Write(0);
+  TIM5::DIER::UIE::Value1::Set();
+}
+
+void Config::EnableLeds()
+{
+  RCC::AHB1ENR::GPIOAEN::Enable::Set();
+  GPIOA::MODER::MODER5::Output::Set();
+  GPIOC::MODER::MODER5::Output::Set();
+  GPIOC::MODER::MODER8::Output::Set();
+  GPIOC::MODER::MODER9::Output::Set();
+}
+
+void Config::EnableADC()
+{
+  RCC::APB2ENR::ADC1EN::Enable::Set();
+  GPIOA::MODER::MODER0::Analog::Set();
+}
+----
+
+== Пример основного кода программы
+
+Как можно заметить, действия переключения режимов светодиодов и обновления режима светодиодов теперь реализованы в обработчиках прерываний. В основном коде представлена только реализация работы АЦП.
+
+.Файл main.cpp
+[source, cpp]
+----
+#include "rccregisters.hpp" // for RCC
+#include "gpioaregisters.hpp" // for GPIOA
+#include  "gpiocregisters.hpp" // for GPIOС
+#include "stkregisters.hpp" // for SystemTimer
+#include "scbregisters.hpp" // for ISCR register
+#include "tim5registers.hpp" // for TIM5
+#include "adc1registers.hpp" // for ADC CR1
+#include "adccommonregisters.hpp" // for ADC Common CCR
+#include "nvicregisters.hpp" // for NVIC
+#include "extiregisters.hpp" // for EXTI
+#include <iostream> // for std::cout
+#include "syscfgregisters.hpp" // for CFGR
+
+#include "Led.h"
+#include "allMode.h"
+#include "chessMode.h"
+#include "treeMode.h"
+#include "LedConfig.h"
+#include "ModesConfig.h"
+#include "Button.h"
+#include "ModeManager.h"
+#include "ADC.h"
+#include "Config.h"
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+Config config;
+
+extern "C" {
+  
+  int __low_level_init(void)
+  {    
+    RCC::CR::HSION::On::Set();
+    
+    while (RCC::CR::HSIRDY::NotReady::IsSet())
+    {  
+    }
+    
+    RCC::CFGR::SW::Hsi::Set();
+    while (!RCC::CFGR::SWS::Hsi::IsSet())
+    {
+    }
+        
+    config.EnableButton();
+    config.EnableLeds();
+    config.EnableADC();    
+    config.EnableTIM5(SystemCoreClock);
+    return 1;
+  }
+}
+
+Button<GPIOC, 13> button;
+
+Led<GPIOC, 5> led1;
+  Led<GPIOC, 8> led2;
+  Led<GPIOC, 9> led3;
+  Led<GPIOA, 5> led4;
+  
+  tLeds leds = {
+    &led1,
+    &led2,
+    &led3,
+    &led4};
+  
+  ChessMode chessmode(leds);
+  AllMode allmode(leds);
+  TreeMode treemode(leds);
+  
+  tMode modes = {
+    &chessmode,
+    &allmode,
+    &treemode
+  };
+  ModeManager modeManager(modes);
+  
+int main()
+{
+  TIM5::CR1::CEN::Enable::Set();
+  ADC adc;
+  adc.Init(0);
+  float temp = 0; // Температура
+  modeManager.InitCurrentMode();
+  for(;;)
+  {
+      while(!adc.Is_ready()) // Готовность АЦП
+      {
+      }
+      temp = adc.Get_temperature(); // Температура платы
+      std::cout << temp << std::endl;
+      
+  }
+}
+----
+
+== Вывод
+
+В ходе данной работы были изучены прерывания. Были реализованы обработчики прерываний таймера (по переполнению) и нажатия кнопки (EXTI). Кроме того, был создан класс, в котором производится вся настройка периферийных устройств.
