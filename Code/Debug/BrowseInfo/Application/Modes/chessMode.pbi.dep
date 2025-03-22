@@ -1,7 +1,7 @@
-D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\BrowseInfo\Application\Modes\chessMode.pbi: \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\chessMode.cpp \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\chessMode.h \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Config\LedConfig.h \
+D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\BrowseInfo\Application\Modes\chessMode.pbi: \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\chessMode.cpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\chessMode.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Config\LedConfig.h \
   D:\Programs\IAR\arm\inc\cpp\array \
   D:\Programs\IAR\arm\inc\cpp\algorithm \
   D:\Programs\IAR\arm\inc\cpp\xmemory \
@@ -55,5 +55,5 @@ D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\BrowseInfo\Application\Modes\ches
   D:\Programs\IAR\arm\inc\cpp\system_error \
   D:\Programs\IAR\arm\inc\cpp\cerrno D:\Programs\IAR\arm\inc\c\errno.h \
   D:\Programs\IAR\arm\inc\cpp\tuple \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Leds\Contracts\ILed.h \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\Application\Modes\Contracts\IMode.h
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Contracts\ILed.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Contracts\IMode.h

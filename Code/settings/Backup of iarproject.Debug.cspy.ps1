@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "D:\Programs\IAR\common\bin\cspybat" -f "D:\Documents\Homework\GitLab\Lab1_1\Lab1\settings\Backup of iarproject.Debug.general.xcl" --backend -f "D:\Documents\Homework\GitLab\Lab1_1\Lab1\settings\Backup of iarproject.Debug.driver.xcl" 
+& "D:\Programs\IAR\common\bin\cspybat" -f "D:\Documents\Homework\GitLab\8semestr\labWork\Code\settings\Backup of iarproject.Debug.general.xcl" --backend -f "D:\Documents\Homework\GitLab\8semestr\labWork\Code\settings\Backup of iarproject.Debug.driver.xcl" 
 }
 else
 {
-& "D:\Programs\IAR\common\bin\cspybat" -f "D:\Documents\Homework\GitLab\Lab1_1\Lab1\settings\Backup of iarproject.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\Documents\Homework\GitLab\Lab1_1\Lab1\settings\Backup of iarproject.Debug.driver.xcl" 
+& "D:\Programs\IAR\common\bin\cspybat" -f "D:\Documents\Homework\GitLab\8semestr\labWork\Code\settings\Backup of iarproject.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\Documents\Homework\GitLab\8semestr\labWork\Code\settings\Backup of iarproject.Debug.driver.xcl" 
 }

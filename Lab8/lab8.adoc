@@ -1,0 +1,649 @@
+= Лабораторная работа №8
+Долгов К.М. <КЭ-413>
+:description: Лабораторная работа №8
+:toc:
+:toc-title: Оглавление
+:figure-caption: Рисунок
+:table-caption: Таблица
+:imagesdir: lab8_images
+:important-caption: ВАЖНО!
+:note-caption: ЗАМЕЧАНИЕ
+:lab-num: 8
+
+include::../lab_titul.adoc[]
+
+
+Аналого-цифровой преобразователь (АЦП) - это устройство, преобразующее входной аналоговый сигнал в дискретный код. Как правило, АЦП преобразуют напряжение в двоичный цифровой код.
+
+== Основные характеристики АЦП
+
+Основные характеристики АЦП:
+
+* разрешение;
+* разрядность;
+* передаточная характеристика;
+* ошибка квантования;
+* нелинейность;
+* частота дискретизации. 
+
+*Разрешение* - минимальное изменение величины аналогового сигнала, которое может быть преобразовано данным АЦП.
+
+*Разрядность* - характеризует количество дискретных значений, которые преобразователь может выдать на выходе.
+
+*Передаточная характеристика* - зависимость числового эквивалента выходного двоичного кода от величины входного аналогового сигнала:
+
+.Передаточная характеристика АЦП
+image::Adc1.jpg[]
+
+На точность АЦП влияют *ошибка квантования* и *нелинейности*, а также апертурные ошибки, вызванные джиттером тактового генератора.
+
+*Ошибка квантования* - это несоответствие между реальным аналоговым входом и цифровым кодом, представляющим это значение.
+
+*Нелинейность АЦП* - это следствие физического несовершенства АЦП. Она проявляется в том, что реальная передаточная характеристика АЦП не всегда является линейной.
+
+*Частота дискретезации* - это частота, с которой производятся числовые значения, генерируемые АЦП.
+
+В данной работе рассматривается *АЦП последовательного приближения*. Он работает по методу половинного деления:
+
+* на компаратор подается значение, равное половине опорного напряжения (0b1000 0000);
+* если компаратор сработал - старший бит скидывается, выставляется 1/4 опорного напряжения (0b0100 0000);
+* если компаратор не сработал, то старший бит сохраняется, и выставляется 3/4 опорного напряжения (0b1100 0000);
+* так продолжается до самого младшего бита.
+
+.АЦП последовательного преобразования
+image::Adc2.png[]
+
+== Регистры для управления АЦП
+
+=== Регистр статуса SR (ADC status register)
+
+image::Adc4.png[400, 800]
+
+//[horizontal]
+Bit5: OVR:: Переполнение. Бит указывает, что данные преобразования регулярного канала были потеряны, т.е. программа не успела считать регистр данных регулярного канала, до следующего преобразования.
+* *0*: было переполнение
+* *1*: переполнения не было
+
+Bit4: STRT:: Флаг начала преобразования регулярного канала
+* *0*: преобразование начато
+* *1*: преобразование не начато
+
+Bit1: EOC:: Преобразование регулярных каналов закончено. Можно считывать регистр данных.
+* *0*: преобразование не закончено
+* *1*: преобразование закончено
+
+=== Регистр управления CR1 (ADC control register 1)
+image::Adc5.png[400, 800]
+
+//[horizontal]
+Bits25..24: RES[1:0]:: разрядность АЦП
+* *00*: разрядность 12 бит (время преобразования 12 + 4 = 16 тактов)
+* *01*: разрядность 10 бит (время преобразования 11 + 4 = 15 тактов)
+* *10*: разрядность 8 бит (время преобразования 9 + 4 = 13 тактов)
+* *11*: разрядность 6 бит (время преобразования 7 + 4 =11 тактов)
+Bit8: SCAN:: Включение режима сканирования. В этом режиме опрашивается группа каналов. АЦП опрашивает все каналы, выбранные в регистрах ADC_SQRx (регулярные каналы)
+Для каждого канала группы выполняется одиночное преобразование. После окончания каждого преобразования следующий канал в группе опрашивается автоматически.
+Если установлен режим непрерывного преобразования (CONT = 1), то после последнего преобразования в группе, преобразования не прекращаются, а заново начинаются от первого выбранного канала в группе.
+* *0*: режим сканирования выключен
+* *1*: режим сканирования включен
+Bit5: EOCIE::  Разрешает прерывание по установке флага окончание преобразования EOC
+* *0*: прерывание запрещено
+* *1*: прерывание разрешено
+
+=== Регистр управления CR2 (ADC control register 2)
+
+image::Adc6.png[400, 1024]
+
+[cols="a, a"]
+|===
+|
+Bit30: SWSTART:: начать преобразование регулярного канала. Устанавливается программно, скидывает аппаратно.
+* *0*: Преобразование не запущено
+* *1*: Начать преобразование
+
+Bit10: EOCS:: Выбор типа окончания преобразования
+* *0*: Бит Окончания преобразования EOC устанавливается после окончания преобразования для всей последовательности
+* *1*: Бит Окончания преобразования EOC устанавливается после окончания преобразования для каждого канала
+|
+
+Bit9: DDS:: режим выключения DMA
+* *0*: DMA запросы не будут выполняться после последнего переданного данного
+* *1*: DMA будут выполняться всегда, как только данные подготовлены и пока включен бит DMA
+
+Bit8: DMA:: Включение DMA
+* *0*: DMA выключен
+* *1*: DMA включен
+Bit1: CONT:: Включение режима непрерывного преобразования
+* *0*: Режим единичного преобразования
+* *1*: Режим непрерывного преобразования
+Bit0: ADON:: Включение АЦП
+* *0*: Отключить АЦП и перейти в режим энергопреобразования
+* *1*: Включить АЦП
+
+|===
+
+=== Регистр настройки времени дискретизации АЦП SMPRx(ADC sample time register)
+
+image::Adc7.png[400, 1024]
+image::Adc8.png[400, 1024]
+
+//[horizontal]
+Bits0..26 SMPx[2:0]:: Выбор времени дискретизации для канала от x.
+* *000*: 3 cycles
+* *001*: 15 cycles
+* *010*: 28 cycles
+* *011*: 56 cycles
+* *100*: 84 cycles
+* *101*: 112 cycles
+* *110*: 144 cycles
+* *111*: 480 cycles
+
+=== Регистр настройки последовательности преобразований SQR (ADC regular sequence register 1 )
+image::Adc9.png[400, 1024]
+//[horizontal]
+Bits20..23: L[3:0]:: Длина последовательности преобразований
+* *0000*: 1 преобразование
+* *0001*: 2 преобразований
+* …………
+* *1111*: 16 преобразований
+
+image::Adc10.png[400, 1024]
+//[horizontal]
+SQx:: Номер канала для *х* преобразования
+
+=== Регистр данных DR (ADC data register)
+
+image::Adc11.png[400, 1024]
+
+Bits0..15: DATA[15:0]:: Данные преобразования регулярного канала
+
+=== Общий регистр управления ССR (ADC common control register ADC_Common)
+
+image::Adc12.png[400, 1024]
+
+Bits23: TSVREFE::  Подключить сенсор температуры и Vref
+* *0*: Отключить сенсора температуры и Vref
+* *1*: Включить сенсор температуры и Vref
+Bits16:17: ADCPRE:: установить частоту работы АЦП
+* *00*: частота равна PCLK2/2
+* *01*: частота равна PCLK2/4
+* *10*: частота равна PCLK2/6
+* *11*: частота равна PCLK2/8
+
+[[ADC_Order]]
+== Порядок запуска одиночного АЦП преобразования
+
+* Подключить АЦП к источнику тактирования – устанавливаем бит ADC1EN в регистре RCC::APB2ENR (АЦП тактируется от шины APB2).
+* Сконфигурировать порты. Определиться по каким каналам будут проводиться измерения, затем соответствующие выводы портов настроить для работы в аналоговом режиме.
+* Сконфигурировать АЦП.
+** Установить разрядность в регистре  ADC::CR1
+** Установить режим одиночного преобразование в регистре ADC::CR1 (биты CONT и EOCS установить в нужное значение)
+** Установить количество измерений 1 в регистре ADC1::SQR1 бит L
+** Выбрать канал для первого преобразования в регистре ADC1::SQR3 биты SQ1
+** Установить скорость дискретизации в регистре SMPRx для нужного канала
+* Включить АЦП. Это делается установкой бита ADON в регистре ADC::CR2.
+* Запустить АЦП на преобразование установкой бита SWSTART в регистре ADC::CR2 для регулярных каналов
+* Дождаться готовности бита EOC  в регистре ADC::SR
+* Считать данные из регистра ADC::DR
+
+== Создание класса ADC
+
+Для того, чтобы реализовать функционал АЦП в коде, создадим класс ADC. Его UML-диаграмма <<UML_ADC, *представлена ниже*>>:
+
+[[UML_ADC]]
+.UML-диаграмма класса ADC
+[plantuml]
+....
+@startuml
+
+interface IADC {
+    +Init(ch: uint32_t)
+    +Is_ready(): bool
+    +Get_voltage(): float
+}
+
+class ADC {
+    -channel: uint32_t
+    -is_initialized: bool
+    +ADC()
+    +Init(ch: uint32_t)
+    +Is_ready(): bool
+    +Get_voltage(): float
+    +Get_temperature(): float
+}
+
+IADC <|-- ADC
+
+@enduml
+....
+
+Метод *Init()* инициализирует АЦП по алгоритму, указанному <<ADC_Order, здесь>>. Входным аргументом метода является канал АЦП.
+
+Метод *Is_ready()* проверяет, готовность бита EOC в регистре ADC::SR.
+
+Методы *Get_voltage()* и *Get_temperature()* возвращают измеренные значения напряжения и температуры соответственно. Метод *Get_temperature()* возвращает значения температуры только для каналов 16 и 18 (см. библию). Если выбран другой канал, то возвращается значение *-1.0f*.
+
+Реализуем класс. Ниже представлен виртуальный класс <<IADC.h, IADC>>
+
+[[IADC.h]]
+.Виртуальный класс IADC
+[source, cpp]
+----
+#include <cstdint> // for uint32_t
+
+#ifndef IADC_H
+#define IADC_H
+
+class IADC
+{
+public:
+  virtual void Init(uint32_t ch) = 0;
+  virtual bool Is_ready() = 0;
+  virtual float Get_voltage() = 0;
+  virtual float Get_temperature() = 0;
+};
+
+#endif
+----
+
+Заголовочный файл <<ADC.h, ADC.h>> представлен ниже:
+
+[[ADC.h]]
+.Заголовочный файл ADC.h
+[source, cpp]
+----
+#ifndef ADC_H
+#define ADC_H
+
+#include "IADC.h" // for IADC
+
+class ADC : public IADC
+{
+public:
+    ADC();
+    void Init(uint32_t ch) override;
+    bool Is_ready() override;
+    float Get_voltage() override;
+    float Get_temperature() override;
+private:
+    uint32_t channel;
+    bool is_initialized;
+};
+
+#endif
+----
+
+Файл <<ADC.cpp, ADC.cpp>> представлен ниже:
+
+[[ADC.cpp]]
+.Файл ADC.cpp
+[source, cpp]
+----
+#include "ADC.h" // for ADC
+#include "adc1registers.hpp" // for ADC CR1
+#include "adccommonregisters.hpp" // for ADC Common CCR
+
+ADC::ADC() : channel(0), is_initialized(false) {}
+
+// Инициализация АЦП
+void ADC::Init(uint32_t ch)
+{
+    if (is_initialized)
+    {
+        // Отключить АЦП при повторной инициализации
+        ADC1::CR2::ADON::Disable::Set();
+        is_initialized = false;
+    }
+
+    channel = ch;
+    // Настройка разрешения (12 бит)
+    ADC1::CR1::RES::Bits12::Set();
+    // Настройка режима преобразования (однократное, выбор по каналу)
+    ADC1::CR2::EOCS::SingleConversion::Set();
+    ADC1::CR2::CONT::SingleConversion::Set();
+    ADC1::SQR1::L::Conversions1::Set();
+    
+    // Установка канала в SQR3
+    ADC1::SQR3::SQ1::Set(channel);
+
+    // Настройка времени выборки (84 цикла)
+    if (channel < 10)
+    {
+        uint32_t smpr2 = ADC1::SMPR2::Get();
+        smpr2 &= ~(0b111 << (3 * channel)); // Очистка битов SMP
+        smpr2 |= (0b100 << (3 * channel));  // 84 цикла (0b100)
+        ADC1::SMPR2::Set(smpr2);
+    }
+    else
+    {
+        uint32_t smpr1 = ADC1::SMPR1::Get();
+        uint32_t index = channel - 10;
+        smpr1 &= ~(0b111 << (3 * index));   // Очистка битов SMP
+        smpr1 |= (0b100 << (3 * index));    // 84 цикла (0b100)
+        ADC1::SMPR1::Set(smpr1);
+    }
+
+    // Включение температурного датчика
+    if ((channel == 16) || (channel == 18))
+    {
+        ADC_Common::CCR::TSVREFE::Enable::Set();
+    }
+    // Включение АЦП и запуск преобразования
+    ADC1::CR2::ADON::Enable::Set();
+    ADC1::CR2::SWSTART::On::Set();
+
+    is_initialized = true;
+}
+
+// Проверка готовности данных
+bool ADC::Is_ready()
+{
+    return is_initialized && ADC1::SR::EOC::ConversionComplete::IsSet();
+}
+
+// Получение данных в виде напряжения (в вольтах)
+float ADC::Get_voltage()
+{
+    uint32_t raw_data = ADC1::DR::DATA::Get(); // Получение счетов АЦП
+    float voltage = (raw_data * 3.3f) / 4096.0f; // Пересчет в напряжение (0–3.3 В)
+    // Перезапуск преобразования
+    ADC1::CR2::SWSTART::On::Set();
+    return voltage;
+}
+
+float ADC::Get_temperature()
+{
+  if (channel != 16 && channel != 18)
+  {
+    return -1.0f; // Если выбран другой канал
+  }
+  float voltage = Get_voltage();
+  float temp = (voltage - 0.76f) / 0.0025f + 25.0f;
+  return temp;
+}
+----
+
+=== Измерение температуры микроконтроллера с помощью встроенного датчика температуры
+
+Покажем работу кода на примере. <<main_temp, Ниже>> показан код *main.c*, выводящий значения температуры в терминал.
+
+[[main_temp]]
+.Пример расчета температуры
+[source, cpp]
+----
+#include "rccregisters.hpp" // for RCC
+#include "gpioaregisters.hpp" // for GPIOA
+#include  "gpiocregisters.hpp" // for GPIOС
+#include "stkregisters.hpp" // for SystemTimer
+#include "scbregisters.hpp" // for ISCR register
+#include "tim5registers.hpp" // for TIM5
+#include "adc1registers.hpp" // for ADC CR1
+#include "adccommonregisters.hpp" // for ADC Common CCR
+#include <iostream> // for std::cout
+
+#include "Led.h"
+#include "allMode.h"
+#include "chessMode.h"
+#include "treeMode.h"
+#include "LedConfig.h"
+#include "ModesConfig.h"
+#include "Button.h"
+#include "ModeManager.h"
+#include "ADC.h"
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+
+extern "C" {
+  
+  int __low_level_init(void)
+  {    
+    RCC::CR::HSION::On::Set();
+    
+    while (RCC::CR::HSIRDY::NotReady::IsSet())
+    {  
+    }
+    
+    RCC::CFGR::SW::Hsi::Set();
+    while (!RCC::CFGR::SWS::Hsi::IsSet())
+    {
+    }
+    RCC::APB2ENR::ADC1EN::Enable::Set();
+    RCC::APB1ENR::TIM5EN::Enable::Set();
+    return 1;
+  }
+}
+
+
+void delay(std::uint32_t timeInMs)
+{
+  assert(timeInMs < 10000);
+  const auto prescalerValue = SystemCoreClock / 1000U - 1U;
+  TIM5::PSC::Write(prescalerValue);
+  TIM5::CR1::URS::Value1::Set(); 
+  TIM5::ARR::Write(timeInMs);
+  TIM5::SR::UIF::Set(0); 
+  TIM5::CNT::Write(0); 
+  TIM5::CR1::CEN::Enable::Set(); 
+  while(TIM5::SR::UIF::NoInterruptPending::IsSet()) 
+  {
+  }
+  TIM5::CR1::CEN::Disable::Set(); 
+  TIM5::SR::UIF::Set(0); 
+}
+
+
+int main()
+{  
+  // Подать тактирование на порт А
+  RCC::AHB1ENR::GPIOAEN::Enable::Set();
+  // Подать тактирование на порт С
+  RCC::AHB1ENR::GPIOCEN::Enable::Set() ;
+  // Порта А.5 на вывод
+  GPIOA::MODER::MODER5::Output::Set() ;
+  // Порта C.5,C.8, C.9 на вывод
+  GPIOC::MODER::MODER5::Output::Set() ;
+  GPIOC::MODER::MODER8::Output::Set() ;
+  GPIOC::MODER::MODER9::Output::Set() ;
+  // Кнопка
+  GPIOC::MODER::MODER13::Input::Set();
+  
+  ADC adc;
+  adc.Init(16); // Инициализация для канала 16
+  
+  float temp = 0; // Температура
+  
+  Button<GPIOC, 13> button;
+  
+  Led<GPIOC, 5> led1;
+  Led<GPIOC, 8> led2;
+  Led<GPIOC, 9> led3;
+  Led<GPIOA, 5> led4;
+  
+  tLeds leds = {
+    &led1,
+    &led2,
+    &led3,
+    &led4};
+  
+  
+  ChessMode chessmode(leds);
+  AllMode allmode(leds);
+  TreeMode treemode(leds);
+  
+  tMode modes = {
+    &chessmode,
+    &allmode,
+    &treemode
+  };
+  ModeManager modeManager(modes);
+  modeManager.InitCurrentMode();
+  
+  for(;;)
+  {
+    while(!adc.Is_ready()) // Готовность АЦП
+    {
+    }
+    temp = adc.Get_temperature(); // Температура платы
+    std::cout << temp << std::endl;
+    modeManager.UpdateCurrentMode();
+    if (button.IsPressed())
+    {
+      modeManager.SwitchMode();
+    }
+    delay(100);
+  }
+  
+  return 1;
+}
+----
+
+Результат работы кода:
+
+.Вывод значений температуры в терминал
+image::main_temp.png[]
+
+=== Измерение напряжения с переменного резистора
+
+Покажем другой пример. При вращении ручки переменного резистора значение напряжения, выводимого в терминал, должно изменяться в пределах от 0 до 3,3 В. Для этого следует выбрать канал 0, поскольку переменный резистор подключен к нему. Также вывод микроконтроллера *PA0* необходимо установить в режим работы аналогового выхода.
+
+.Пример расчета температуры
+[source, cpp]
+----
+#include "rccregisters.hpp" // for RCC
+#include "gpioaregisters.hpp" // for GPIOA
+#include  "gpiocregisters.hpp" // for GPIOС
+#include "stkregisters.hpp" // for SystemTimer
+#include "scbregisters.hpp" // for ISCR register
+#include "tim5registers.hpp" // for TIM5
+#include "adc1registers.hpp" // for ADC CR1
+#include "adccommonregisters.hpp" // for ADC Common CCR
+#include <iostream> // for std::cout
+
+#include "Led.h"
+#include "allMode.h"
+#include "chessMode.h"
+#include "treeMode.h"
+#include "LedConfig.h"
+#include "ModesConfig.h"
+#include "Button.h"
+#include "ModeManager.h"
+#include "ADC.h"
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+
+extern "C" {
+  
+  int __low_level_init(void)
+  {    
+    RCC::CR::HSION::On::Set();
+    
+    while (RCC::CR::HSIRDY::NotReady::IsSet())
+    {  
+    }
+    
+    RCC::CFGR::SW::Hsi::Set();
+    while (!RCC::CFGR::SWS::Hsi::IsSet())
+    {
+    }
+    RCC::APB2ENR::ADC1EN::Enable::Set();
+    RCC::APB1ENR::TIM5EN::Enable::Set();
+    return 1;
+  }
+}
+
+
+void delay(std::uint32_t timeInMs)
+{
+  assert(timeInMs < 10000);
+  const auto prescalerValue = SystemCoreClock / 1000U - 1U;
+  TIM5::PSC::Write(prescalerValue);
+  TIM5::CR1::URS::Value1::Set(); 
+  TIM5::ARR::Write(timeInMs);
+  TIM5::SR::UIF::Set(0); 
+  TIM5::CNT::Write(0); 
+  TIM5::CR1::CEN::Enable::Set(); 
+  while(TIM5::SR::UIF::NoInterruptPending::IsSet()) 
+  {
+  }
+  TIM5::CR1::CEN::Disable::Set(); 
+  TIM5::SR::UIF::Set(0); 
+}
+
+
+int main()
+{  
+  // Подать тактирование на порт А
+  RCC::AHB1ENR::GPIOAEN::Enable::Set();
+  // Подать тактирование на порт С
+  RCC::AHB1ENR::GPIOCEN::Enable::Set() ;
+  // Порта А.5 на вывод
+  GPIOA::MODER::MODER5::Output::Set() ;
+  //Пин PA0 - на переменный резистор
+  GPIOA::MODER::MODER0::Analog::Set();
+  // Порта C.5,C.8, C.9 на вывод
+  GPIOC::MODER::MODER5::Output::Set() ;
+  GPIOC::MODER::MODER8::Output::Set() ;
+  GPIOC::MODER::MODER9::Output::Set() ;
+  // Кнопка
+  GPIOC::MODER::MODER13::Input::Set();
+  
+  ADC adc;
+  adc.Init(0); // Инициализация для канала 0
+  
+  float vol = 0; // Напряжение
+  
+  Button<GPIOC, 13> button;
+  
+  Led<GPIOC, 5> led1;
+  Led<GPIOC, 8> led2;
+  Led<GPIOC, 9> led3;
+  Led<GPIOA, 5> led4;
+  
+  tLeds leds = {
+    &led1,
+    &led2,
+    &led3,
+    &led4};
+  
+  
+  ChessMode chessmode(leds);
+  AllMode allmode(leds);
+  TreeMode treemode(leds);
+  
+  tMode modes = {
+    &chessmode,
+    &allmode,
+    &treemode
+  };
+  ModeManager modeManager(modes);
+  modeManager.InitCurrentMode();
+  
+  for(;;)
+  {
+    while(!adc.Is_ready()) // Готовность АЦП
+    {
+    }
+    vol = adc.Get_voltage(); // Напряжение на переменном резисторе
+    std::cout << vol << std::endl;
+    modeManager.UpdateCurrentMode();
+    if (button.IsPressed())
+    {
+      modeManager.SwitchMode();
+    }
+    delay(100);
+  }
+  
+  return 1;
+}
+----
+
+Результат выполнения кода:
+
+.Напряжение на переменном резисторе
+image::main_res.png[]
+
+Как можно заметить, при вращении ручки резистора значение напряжения меняется.
+
+== Вывод
+
+В ходе данной работы был изучен принцип работы АЦП. Изучены основные регистры, предназначенные для его управления, а также реализован класс для работы с АЦП в режиме одиночного преобразования.

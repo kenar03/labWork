@@ -357,6 +357,10 @@
                     <state>$PROJ_DIR$\Application\Modes\Config</state>
                     <state>$PROJ_DIR$\Application\Button</state>
                     <state>$PROJ_DIR$\Application\Button\Contracts</state>
+                    <state>$PROJ_DIR$\Application\ADC</state>
+                    <state>$PROJ_DIR$\Application\ADC\Contracts</state>
+                    <state>$PROJ_DIR$\Application\Timers</state>
+                    <state>$PROJ_DIR$\Application\Config</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2374,6 +2378,27 @@
     <group>
         <name>Application</name>
         <group>
+            <name>ADC</name>
+            <group>
+                <name>Config</name>
+                <file>
+                    <name>$PROJ_DIR$\Application\ADC\Config\ADCConfig.h</name>
+                </file>
+            </group>
+            <group>
+                <name>Contracts</name>
+                <file>
+                    <name>$PROJ_DIR$\Application\ADC\Contracts\IADC.h</name>
+                </file>
+            </group>
+            <file>
+                <name>$PROJ_DIR$\Application\ADC\ADC.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\Application\ADC\ADC.h</name>
+            </file>
+        </group>
+        <group>
             <name>Button</name>
             <group>
                 <name>Contracts</name>
@@ -2383,6 +2408,18 @@
             </group>
             <file>
                 <name>$PROJ_DIR$\Application\Button\Button.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\8semestr\labWork\Code\Application\Button\ButtonIsPressed.h</name>
+            </file>
+        </group>
+        <group>
+            <name>Config</name>
+            <file>
+                <name>$PROJ_DIR$\Application\Config\Config.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\Application\Config\Config.h</name>
             </file>
         </group>
         <group>
@@ -2443,6 +2480,12 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\Application\Modes\treeMode.h</name>
+            </file>
+        </group>
+        <group>
+            <name>Timers</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\8semestr\labWork\Code\Application\Timers\timer.h</name>
             </file>
         </group>
     </group>

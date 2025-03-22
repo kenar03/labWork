@@ -1,2 +1,80 @@
-D:\Documents\Homework\GitLab\Lab1_1\Lab1\Debug\BrowseInfo\startupF411RE.pbi: \
-  D:\Documents\Homework\GitLab\Lab1_1\Lab1\startupF411RE.cpp
+D:\Documents\Homework\GitLab\8semestr\labWork\Code\Debug\BrowseInfo\startupF411RE.pbi: \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\startupF411RE.cpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Timers\timer.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\tim5registers.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\tim5fieldvalues.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\fieldvalue.hpp \
+  D:\Programs\IAR\arm\inc\cpp\cstddef D:\Programs\IAR\arm\inc\c\stddef.h \
+  D:\Programs\IAR\arm\inc\c\ycheck.h D:\Programs\IAR\arm\inc\c\yvals.h \
+  D:\Programs\IAR\arm\inc\c\DLib_Defaults.h \
+  D:\Programs\IAR\arm\inc\c\DLib_Config_Normal.h \
+  D:\Programs\IAR\arm\inc\c\DLib_Product.h \
+  D:\Programs\IAR\arm\inc\c\ysizet.h D:\Programs\IAR\arm\inc\cpp\limits \
+  D:\Programs\IAR\arm\inc\cpp\cfloat D:\Programs\IAR\arm\inc\c\float.h \
+  D:\Programs\IAR\arm\inc\cpp\climits D:\Programs\IAR\arm\inc\c\limits.h \
+  D:\Programs\IAR\arm\inc\cpp\cmath D:\Programs\IAR\arm\inc\c\math.h \
+  D:\Programs\IAR\arm\inc\c\DLib_float_setup.h \
+  D:\Programs\IAR\arm\inc\c\xtgmath.h \
+  D:\Programs\IAR\arm\inc\cpp\xtr1common \
+  D:\Programs\IAR\arm\inc\cpp\cstdlib D:\Programs\IAR\arm\inc\c\stdlib.h \
+  D:\Programs\IAR\arm\inc\c\DLib_Product_stdlib.h \
+  D:\Programs\IAR\arm\inc\cpp\cwchar D:\Programs\IAR\arm\inc\c\wchar.h \
+  D:\Programs\IAR\arm\inc\cpp\xstddef D:\Programs\IAR\arm\inc\c\xstddef0 \
+  D:\Programs\IAR\arm\inc\cpp\initializer_list \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\fieldvaluebase.hpp \
+  D:\Programs\IAR\arm\inc\cpp\type_traits \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\accessmode.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Common\susudefs.hpp \
+  D:\Programs\IAR\arm\inc\cpp\algorithm \
+  D:\Programs\IAR\arm\inc\cpp\xmemory \
+  D:\Programs\IAR\arm\inc\cpp\xmemory0 \
+  D:\Programs\IAR\arm\inc\cpp\cstdint D:\Programs\IAR\arm\inc\c\stdint.h \
+  D:\Programs\IAR\arm\inc\cpp\new D:\Programs\IAR\arm\inc\cpp\exception \
+  D:\Programs\IAR\arm\inc\cpp\xxexception \
+  D:\Programs\IAR\arm\inc\c\xmemnew D:\Programs\IAR\arm\inc\cpp\xutility \
+  D:\Programs\IAR\arm\inc\cpp\utility D:\Programs\IAR\arm\inc\cpp\iosfwd \
+  D:\Programs\IAR\arm\inc\cpp\cstdio D:\Programs\IAR\arm\inc\c\stdio.h \
+  D:\Programs\IAR\arm\inc\cpp\cstring D:\Programs\IAR\arm\inc\c\string.h \
+  D:\Programs\IAR\arm\inc\c\DLib_Product_string.h \
+  D:\Programs\IAR\arm\inc\c\xatomic.h \
+  D:\Programs\IAR\arm\inc\cpp\cassert D:\Programs\IAR\arm\inc\c\assert.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\registerfield.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\registerbase.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\registertype.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\register.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\fieldvalue.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\accessmode.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\tim2registers.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\tim2fieldvalues.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Button\ButtonIsPressed.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\extiregisters.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\extifieldvalues.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\gpiocregisters.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\AHardware\Registers\STM32F411\FieldValues\gpiocfieldvalues.hpp \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\ModeManager.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Contracts\IModeManager.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Config\ModesConfig.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Config\LedConfig.h \
+  D:\Programs\IAR\arm\inc\cpp\array D:\Programs\IAR\arm\inc\cpp\iterator \
+  D:\Programs\IAR\arm\inc\cpp\istream \
+  D:\Programs\IAR\arm\inc\cpp\ostream D:\Programs\IAR\arm\inc\cpp\ios \
+  D:\Programs\IAR\arm\inc\cpp\xlocnum \
+  D:\Programs\IAR\arm\inc\cpp\streambuf \
+  D:\Programs\IAR\arm\inc\cpp\xiosbase \
+  D:\Programs\IAR\arm\inc\cpp\xlocale \
+  D:\Programs\IAR\arm\inc\cpp\clocale D:\Programs\IAR\arm\inc\c\locale.h \
+  D:\Programs\IAR\arm\inc\c\xctype.h \
+  D:\Programs\IAR\arm\inc\c\xlocale_lconv.h \
+  D:\Programs\IAR\arm\inc\cpp\cwctype D:\Programs\IAR\arm\inc\c\wctype.h \
+  D:\Programs\IAR\arm\inc\cpp\stdexcept \
+  D:\Programs\IAR\arm\inc\cpp\xstring \
+  D:\Programs\IAR\arm\inc\cpp\typeinfo \
+  D:\Programs\IAR\arm\inc\cpp\xlocinfo \
+  D:\Programs\IAR\arm\inc\cpp\cctype D:\Programs\IAR\arm\inc\c\ctype.h \
+  D:\Programs\IAR\arm\inc\cpp\ctime D:\Programs\IAR\arm\inc\c\time.h \
+  D:\Programs\IAR\arm\inc\c\time64.h \
+  D:\Programs\IAR\arm\inc\cpp\system_error \
+  D:\Programs\IAR\arm\inc\cpp\cerrno D:\Programs\IAR\arm\inc\c\errno.h \
+  D:\Programs\IAR\arm\inc\cpp\tuple \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Leds\Contracts\ILed.h \
+  D:\Documents\Homework\GitLab\8semestr\labWork\Code\Application\Modes\Contracts\IMode.h
