@@ -1,0 +1,448 @@
+= Лабораторная работа №10
+Долгов К.М. <КЭ-413>
+:description: Лабораторная работа №10
+:toc:
+:toc-title: Оглавление
+:figure-caption: Рисунок
+:table-caption: Таблица
+:imagesdir: lab10_images
+:important-caption: ВАЖНО!
+:note-caption: ЗАМЕЧАНИЕ
+:lab-num: 10
+
+include::../lab_titul.adoc[]
+
+== Операционная система реального времени (RTOS)
+
+Операционная система реального времени (RTOS) - это операционная система, предназначенная для выполнения задач в условиях ограниченности ресурсов. RTOS используются в проектах, где важны точная временная синхронизация и быстрая реакция на события.
+
+=== Планировщик
+
+Как правило, микроконтроллеры имеют только одно ядро, которое может выполнять в конкретный момент времени только одну задачу. Например, при возникновении начинается его обработка, однако во время его обработки вся программа "зависает" до тех пор, пока обработка не будет завершена. Чтобы этого избежать, используют операционную систему реального времени. Она позволяет разбивать задачи так, чтобы они выполнялись по частям. Например, сначала выполняется часть задачи, потом ее выполнение прерывается и начинает выполняться другая, а потом выполнение первой задачи завершается.
+
+Для того, чтобы управлять задачами, существует планировщик. Он распределяет между задачами процессорное время, определяя, какая задача будет выполняться в данный момент времени, когда между задачами следует переключаться и как обрабатывать их приоритеты и состояния.
+
+В RTOS у задач существуют статусы задач:
+
+* Running - выполняется;
+* Ready - готова к выполнению;
+* Blocked - заблокирована (ждет какого-то события, чтобы продолжить выполнение);
+* Suspended - приостановлена (временно исключена из планирования вручную).
+
+Стоит учитывать, что на самом деле задачи не выполняются одновременно, т.к. микроконтроллер имеет лишь одно ядро. Однако благодаря планировщику, распределение процессорного времени получается настолько эффективным, что кажется, будто задачи выполняются параллельно.
+
+=== События (Events)
+
+В операционных системах реального времени существуют события. События - это механизм синхронизации, который уведомляет задачи о наступлении определенных действий или изменений в системе.
+
+В проекте имеется файл *event.hpp*, в котором реализовано событие:
+
+.event.hpp
+[source, cpp]
+----
+#ifndef EVENT_HPP
+#define EVENT_HPP
+
+// For tEvent
+#include "rtosdefs.hpp" //for tTime
+#include "rtoswrapper.hpp" //for RtosWrapper
+#include "eventmode.hpp" // for EventMode
+
+
+namespace OsWrapper
+{
+
+  constexpr tTime waitForEver = 0;
+  constexpr tEventBits defaultMask = {0b11111111};
+
+  class Event
+  {
+  public:
+    __forceinline explicit Event(const std::chrono::milliseconds delay, const tEventBits maskBits) :
+        timeOut{(std::chrono::duration_cast<TicksPerSecond>(delay)).count()},
+        mask{maskBits}
+    {
+      handle = RtosWrapper::wCreateEvent(event);
+    }
+
+    __forceinline ~Event()
+    {
+      RtosWrapper::wDeleteEvent(handle);
+    }
+
+    __forceinline void Signal()
+    {
+      RtosWrapper::wSignalEvent(handle, mask);
+    }
+
+    __forceinline tEventBits Wait(const EventMode mode = EventMode::waitAnyBits,
+                                  const tEventBits maskBits = defaultMask) const
+    {
+      return RtosWrapper::wWaitEvent(handle, maskBits, timeOut, mode);
+    }
+
+    __forceinline void SetTimeout(std::chrono::milliseconds delay)
+    {     
+      timeOut = (std::chrono::duration_cast<TicksPerSecond>(delay)).count();
+    }
+
+    __forceinline void SetMaskBits(tEventBits maskBits)
+    {
+      mask = maskBits;
+    }
+
+  private:
+    tEventHandle handle{0};
+    tEvent event;
+    tTime timeOut = 1000;
+    tEventBits mask{defaultMask};
+  };
+};
+
+#endif // EVENT_HPP
+----
+
+Основной метод этого класса - метод *Signal()*. Он оповещает систему о том, что событие активировалось и требует обработки.
+
+Метод *Wait()* ожидает наступления события, блокируя вызывающую задачу до выполнения условий, заданных параметрами.
+
+Реализуем несколько задач с использованием событий. Одна задача при нажатии кнопки создает событие, а вторая задача - мигает светодиодом в ответ на событие. Таким образом, требуется сделать так, чтобы при нажатии кнопки светодиод либо включался, либо выключался.
+
+Реализуем первую задачу *ButtonTask*.
+
+.Заголовочный файл ButtonTask.h
+[source, cpp]
+----
+#ifndef BUTTONTASK
+#define BUTTONTASK
+
+#include "thread.hpp" // for Thread
+#include "IButton.h" // for IButton
+#include "event.hpp"  // for Event
+#include <chrono> // for ms
+
+class ButtonTask : public OsWrapper::Thread<2048>
+{
+public:
+  ButtonTask(IButton& button, OsWrapper::Event& event) : mButton(button), mEvent(event) {}
+  void Execute() override;
+private:
+  IButton& mButton;
+  OsWrapper::Event& mEvent;
+};
+
+#endif
+----
+
+.Файл ButtonTask.cpp
+[source, cpp]
+----
+#include "ButtonTask.h" // for ButtonTask
+#include "Button.h" // for Button
+
+void ButtonTask::Execute()
+{
+  for(;;)
+  {
+    if (mButton.IsPressed())
+    {
+      mEvent.Signal(); // Оповестить систему, что кнопка была нажата
+    }
+    Sleep(300ms);
+  }
+}
+----
+
+Класс *ButtonTask* при нажатии кнопки создает событие, но больше ничего не делает. Создадим вторую задачу и назовем ее *LedTask*.
+
+.Заголовочный файл ledtask.hpp
+[source, cpp]
+----
+#ifndef LEDTASK
+#define LEDTASK
+
+#include "thread.hpp" // for Thread
+#include "ILed.h" // for ILed
+#include "event.hpp"  // for Event
+#include <chrono> // for ms
+
+class LedTask : public OsWrapper::Thread<2048>
+{
+public:
+  LedTask(ILed& led, OsWrapper::Event& event) : mLed(led), mEvent(event) {}
+  void Execute() override;
+private:
+  ILed& mLed;
+  OsWrapper::Event& mEvent;
+};
+
+#endif
+----
+
+.Файл LedTask.cpp
+[source, cpp]
+----
+#include "ledtask.hpp"
+#include "gpioaregisters.hpp" // for GPIOA
+#include "Led.h" // for Led
+
+
+
+void LedTask::Execute()
+{
+  for(;;)
+  {
+    if (mEvent.Wait() != 0)
+    {
+      mLed.Switch(); // Переключить светодиод
+    }
+    Sleep(100ms);
+  }
+} ;
+----
+
+Наконец, реализуем задачи в main.cpp.
+
+.main.hpp
+[source, cpp]
+----
+#include "rtos.hpp"         // for Rtos
+#include "mailbox.hpp"      // for Mailbox
+#include "event.hpp"        // for Event
+
+#include "myfirsttask.h" // for MyFirstTask
+#include "ledtask.hpp"     // for Led1Task
+#include "ButtonTask.h" // for ButtonTask
+#include "Led.h" // for Led
+#include "Button.h" // for Button
+//#include "myfirsttask.h"    // for MyFirstTask
+//#include "buttontask.h"   //for ButtonTask
+#include "rccregisters.hpp" // for RCC
+
+//#include "Application/Diagnostic/GlobalStatus.hpp"
+#include "gpioaregisters.hpp"  // for GPIOA
+#include "gpiocregisters.hpp"  // for GPIOC
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+
+
+extern "C" {
+int __low_level_init(void)
+{
+  //Switch on external 16 MHz oscillator
+  RCC::CR::HSION::On::Set();
+ // while (RCC::CR::HSIRDY::NotReady::IsSet())
+  {
+
+  }
+  //Switch system clock on external oscillator
+  RCC::CFGR::SW::Hsi::Set();
+//  while (!RCC::CFGR::SWS::Hsi::IsSet())
+ {
+
+  }
+  //Switch on clock on PortA and PortC
+  RCC::AHB1ENRPack<
+      RCC::AHB1ENR::GPIOCEN::Enable,
+      RCC::AHB1ENR::GPIOAEN::Enable
+  >::Set();
+
+  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+
+  //LED1 on PortA.5, set PortA.5 as output
+  GPIOA::MODER::MODER5::Output::Set();
+
+  /* LED2 on PortC.9, LED3 on PortC.8, LED4 on PortC.5 so set PortC.5,8,9 as output */
+  GPIOC::MODERPack<
+      GPIOC::MODER::MODER5::Output,
+      GPIOC::MODER::MODER8::Output,
+      GPIOC::MODER::MODER9::Output,
+      GPIOC::MODER::MODER13::Input
+  >::Set();
+
+  return 1;
+}
+}
+
+OsWrapper::Event buttonEvent(500ms, 1); // Событие
+
+Led<GPIOA, 5> led1; // Светодиод
+Button<GPIOC, 13> button; // Кнопка
+LedTask ledTask(led1, buttonEvent);
+ButtonTask buttonTask(button, buttonEvent);
+
+int main()
+{
+  using namespace OsWrapper;
+  Rtos::CreateThread(ledTask, "LedTask"); // Задача ledTask
+  Rtos::CreateThread(buttonTask, "ButtonTask", ThreadPriority::normal); // Задача buttonTask
+  Rtos::Start();
+  return 0;
+}
+----
+
+Помимо событий существует также другой механизм межзадачной коммуникации - MailBox.
+
+=== MailBox
+
+Главное отличие MailBox от событий заключается в том, что *MailBox* не только сигнализирует о необходимости обработки задачи, но и передает данные. Так, например, *MailBox* может передать конкретные данные: число, строку, адрес и т.д.
+
+Реализуем те же самые задачи, используя MailBox. В проекте существует класс MailBox, реализованный в файле *mailbox.hpp*.
+
+.mailbox.hpp
+[source, cpp]
+----
+#ifndef MAILBOX_HPP
+#define MAILBOX_HPP
+
+#include "rtosdefs.hpp"
+#include <array>  ///for std::array
+#include <chrono> // for 'ms' literal
+#include "rtoswrapper.hpp" // for RtosWrapper
+
+namespace OsWrapper
+{
+
+  template<typename T, std::size_t size>
+  class MailBox
+  {
+    public:
+    __forceinline MailBox()
+      {
+        handle = RtosWrapper::wMailBoxCreate(size, sizeof(T), buffer.data(), context);
+      }
+
+    __forceinline ~MailBox()
+      {
+        RtosWrapper::wMailBoxDelete(handle);
+      }
+
+    __forceinline bool Put(const T &item)
+      {
+        return RtosWrapper::wMailBoxPut(handle, &item);
+      }
+
+    __forceinline bool Get(T &item, std::chrono::milliseconds timeOut)
+      {
+        return RtosWrapper::wMailBoxGet(handle, &item, std::chrono::duration_cast<TicksPerSecond>(timeOut).count());
+      }
+
+    private:
+      tMailBoxHandle handle;
+      tMailBoxContext context;
+      std::array<std::uint8_t, size * sizeof(T)> buffer;
+  };
+}
+#endif //MAILBOX_HPP
+----
+
+В классе MailBox существует только 2 метода: *Put()* - положить данные в буфер и *Get()* - извлечь данные.
+
+Реализуем задачу *ButtonTask*.
+
+.Заголовочный файл ButtonTask.h
+[source, cpp]
+----
+#ifndef BUTTONTASK
+#define BUTTONTASK
+
+#include "thread.hpp" // for Thread
+#include "IButton.h" // for IButton
+#include "mailbox.hpp"  // for MailBox
+#include "mutex.hpp" // for Mutex
+#include <chrono> // for ms
+
+class ButtonTask : public OsWrapper::Thread<2048>
+{
+public:
+  ButtonTask(IButton& button, OsWrapper::MailBox<char*, 1>& mailBox, char* message, OsWrapper::Mutex& mutex) : mButton(button), mMailBox(mailBox), mMessage(message), mMutex(mutex) {}
+  void Execute() override;
+private:
+  IButton& mButton;
+  OsWrapper::MailBox<char*, 1>& mMailBox;
+  OsWrapper::Mutex& mMutex;
+  char* mMessage;
+};
+
+#endif
+----
+
+.Файл ButtonTask.cpp
+[source, cpp]
+----
+#include "ButtonTask.h" // for ButtonTask
+#include "Button.h" // for Button
+#include <iostream> // for std
+#include "mutex.hpp" // for mutex
+
+void ButtonTask::Execute()
+{
+  for(;;)
+  {
+    if (mButton.IsPressed())
+    {
+      mMailBox.Put(mMessage);
+    }
+    Sleep(10ms);
+  }
+}
+----
+
+Данный класс осуществляет загрузку в буфер *MailBox* сообщения, представляющего собой массив символов *char*.
+
+Реализуем задачу *LedTask*.
+
+.Заголовочный файл ledtask.hpp
+[source, cpp]
+----
+#ifndef LEDTASK
+#define LEDTASK
+
+#include "thread.hpp" // for Thread
+#include "ILed.h" // for ILed
+#include "mailbox.hpp"  // for MailBox
+#include <chrono> // for ms
+#include "mutex.hpp" // for Mutex
+
+class LedTask : public OsWrapper::Thread<2048>
+{
+public:
+  LedTask(ILed& led, OsWrapper::MailBox<char*, 1>& mailBox, OsWrapper::Mutex& mutex) : mLed(led), mMailBox(mailBox), mMutex(mutex) {}
+  void Execute() override;
+private:
+  ILed& mLed;
+  OsWrapper::MailBox<char*, 1>& mMailBox;
+  OsWrapper::Mutex& mMutex;
+};
+
+#endif
+----
+
+.Файл LedTask.cpp
+[source, cpp]
+----
+#include "ledtask.hpp"
+#include "gpioaregisters.hpp" // for GPIOA
+#include "Led.h" // for Led
+#include <iostream> // for std
+#include "criticalsection.hpp" // for critical section
+
+void LedTask::Execute()
+{
+  for(;;)
+  {
+    char* mMessage;
+    if (mMailBox.Get(mMessage, 10ms) != 0)
+    {
+      mLed.Switch();
+      std::cout << mMessage << std::endl;
+    }
+  }
+} ;
+----
+
+Задача *LedTask* не только переключает светодиод, но и выводит в терминал сооющение из символов *char*.
+
+.Вывод сообщения в терминал после нажатия кнопки
+image::MailBox_Task.png[]
+
