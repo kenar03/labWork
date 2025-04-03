@@ -4,5 +4,8 @@
   },
   "project": {
     "path": "${workspaceFolder}\\Code\\iarproject.ewp"
+  },
+  "workbench": {
+    "path": "D:\\Programs\\IAR"
   }
 }

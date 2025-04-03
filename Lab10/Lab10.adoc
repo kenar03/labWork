@@ -349,18 +349,16 @@ namespace OsWrapper
 #include "thread.hpp" // for Thread
 #include "IButton.h" // for IButton
 #include "mailbox.hpp"  // for MailBox
-#include "mutex.hpp" // for Mutex
 #include <chrono> // for ms
 
 class ButtonTask : public OsWrapper::Thread<2048>
 {
 public:
-  ButtonTask(IButton& button, OsWrapper::MailBox<char*, 1>& mailBox, char* message, OsWrapper::Mutex& mutex) : mButton(button), mMailBox(mailBox), mMessage(message), mMutex(mutex) {}
+  ButtonTask(IButton& button, OsWrapper::MailBox<char*, 1>& mailBox, char* message) : mButton(button), mMailBox(mailBox), mMessage(message) {}
   void Execute() override;
 private:
   IButton& mButton;
   OsWrapper::MailBox<char*, 1>& mMailBox;
-  OsWrapper::Mutex& mMutex;
   char* mMessage;
 };
 
@@ -446,3 +444,407 @@ void LedTask::Execute()
 .Вывод сообщения в терминал после нажатия кнопки
 image::MailBox_Task.png[]
 
+=== Critical Section
+
+При обработке задач в операционных системах реального времени может возникнуть следующая проблема. Если у задач назначен приоритет, и при этом несколько задач выполняется параллельно, то задача, имеющая более высокий приоритет, может вытеснить задачу, имеющую более низкий приоритет так, что последняя либо выполнится не до конца, а только ее часть, либо не выполнится вовсе.
+
+Покажем на примере. Имеется 2 задачи, выводящие в терминал сообщения. У задачи *LedTask* приоритет выше, чем у задачи *ButtonTask*.
+
+.Задача LedTask
+[source, cpp]
+----
+#include "ledtask.hpp"
+#include "gpioaregisters.hpp" // for GPIOA
+#include "Led.h" // for Led
+#include <iostream> // for std
+
+void LedTask::Execute()
+{
+  for(;;)
+  {
+    std::cout << "Led Task:";
+    std::cout << "Here comes a message from LedTask" << std::endl;
+    Sleep(1ms);
+  }
+} ;
+----
+
+.Задача ButtonTask
+[source, cpp]
+----
+#include "ButtonTask.h" // for ButtonTask
+#include "Button.h" // for Button
+#include <iostream> // for std
+
+void ButtonTask::Execute()
+{
+  for(;;)
+  {
+    std::cout << "Button Task:";
+    std::cout << "Here comes a message from ButtonTask" << std::endl;
+    Sleep(1ms);
+  }
+}
+----
+
+.main.cpp
+[source, cpp]
+----
+int main()
+{
+  using namespace OsWrapper;
+  Rtos::CreateThread(ledTask, "LedTask", ThreadPriority::highest); // Приоритет наивысший
+  Rtos::CreateThread(buttonTask, "ButtonTask", ThreadPriority::normal); // Приоритет ниже
+  Rtos::Start();
+  return 0;
+}
+----
+
+При таких настройках задач вывод в терминал будет таким:
+
+.Вывод в терминал
+image::terminal_output_no_cs.png[]
+
+Как можно заметить, задача *LedTask* временами вытесняет задачу *ButtonTask*, прерывая ее выполнение.
+
+Чтобы избежать такого развития событий, существует несколько методов. Один из них - использолвание критической секции (*Critical Section*).
+
+Суть работы критической секции заключается в том, что при обработке требуемого ресурса она отключает все прерывания в микроконтроллере, чтобы другие задачи не смогли вмешаться в процесс выполняемой задачи.
+
+В проекте критическая секция реализована в файле *criticalsection.hpp*
+
+.criticalsection.hpp
+[source, cpp]
+----
+#ifndef CRITICALSECTION_HPP
+#define CRITICALSECTION_HPP
+
+#include "rtoswrapper.hpp" // for RtosWrapper
+
+namespace OsWrapper
+{
+  class CriticalSection
+  {
+    public:
+      inline CriticalSection()
+      {
+        RtosWrapper::wEnterCriticalSection() ;
+      } 
+      
+      inline ~CriticalSection()
+      {
+        RtosWrapper::wLeaveCriticalSection() ;
+      } 
+  } ;
+} ;
+#endif // CRITICALSECTION_HPP
+----
+
+В классе *CriticalSection* имеются только конструктор и деструктор. При инициализации объекта класса прерывания отключаются, а при его удалении включаются снова. Используем критическую секцию для устранения проблемы.
+
+.Задача LedTask
+[source, cpp]
+----
+#include "ledtask.hpp"
+#include "gpioaregisters.hpp" // for GPIOA
+#include "Led.h" // for Led
+#include <iostream> // for std
+#include "criticalsection.hpp" // for CriticalSection
+
+void LedTask::Execute()
+{
+  for(;;)
+  {
+    Sleep(1ms);
+    // Захватить ресурс std::cout
+    OsWrapper::CriticalSection cs;
+    std::cout << "Led Task:";
+    std::cout << "Here comes a message from LedTask" << std::endl;
+    // Освободить ресурс
+  }
+} ;
+----
+
+.Задача ButtonTask
+[source, cpp]
+----
+#include "ButtonTask.h" // for ButtonTask
+#include "Button.h" // for Button
+#include <iostream> // for std
+#include "criticalsection.hpp" // for CriticalSection
+
+void ButtonTask::Execute()
+{
+  for(;;)
+  {
+    Sleep(1ms);
+    // Захватить ресурс std::cout
+    OsWrapper::CriticalSection cs;
+    std::cout << "Button Task:";
+    std::cout << "Here comes a message from ButtonTask" << std::endl;
+    // Освободить ресурс
+  }
+}
+----
+
+.main.cpp
+[source, cpp]
+----
+int main()
+{
+  using namespace OsWrapper;
+  Rtos::CreateThread(ledTask, "LedTask", ThreadPriority::highest); // Приоритет наивысший
+  Rtos::CreateThread(buttonTask, "ButtonTask", ThreadPriority::normal); // Приоритет ниже
+  Rtos::Start();
+  return 0;
+}
+----
+
+При вызове объекта класса *CriticalSection* ресурс захватывается и прерывания отключаются, а по окончании задачи происходит выход из бесконечного цикла, вызывается деструктор, и прерывания включаются.
+
+Вывод в терминал будет таким.
+
+.Вывод в терминал
+image::terminal_output_cs.png[]
+
+Как можно заметить, больше не возникает случаев, когда задача с более высоким приоритетом прерывает выполнение низкоприоритетной. Вместо этого каждая задача завершается до конца.
+
+=== Mutex
+
+У критической секции есть существенный недостаток: она блокирует все прерывания на достаточно большой промедуток времени. Если во время прерываний производились какие-то расчеты, то он могут не успеть завершиться.
+
+Для того, чтобы работать только с задачей и не отключать все прерывания в целом, существует примитив, называемый *Mutex*. В проекте он реализован в файле *mutex.hpp*.
+
+.mutex.hpp
+[source, cpp]
+----
+#ifndef MUTEX_HPP
+#define MUTEX_HPP
+
+#include "FreeRtos/rtosdefs.hpp"
+#include "rtoswrapper.hpp" //for RtosWrapper
+
+namespace OsWrapper
+{
+
+  class Mutex
+  {
+    public:
+      __forceinline Mutex(): handle(RtosWrapper::wCreateMutex(mutex))
+      {
+      }
+
+    __forceinline ~Mutex()
+      {
+        RtosWrapper::wDeleteMutex(handle);
+      }
+
+    __forceinline bool Lock(tTime timeOut = (std::chrono::duration_cast<TicksPerSecond>(1000ms)).count())
+      {
+        return RtosWrapper::wLockMutex(handle, timeOut) ;
+      }
+
+    __forceinline void UnLock()
+      {
+        RtosWrapper::wUnLockMutex(handle);
+      }
+
+    private:
+      tMutex mutex;
+      tMutexHandle handle;
+  };
+}
+#endif //MUTEX_HPP
+----
+
+У класса *Mutex* имеется 2 метода: *Lock* - заблокировать ресурс, *UnLock* - освободить ресурс.
+
+Реализуем те же самые задачи с использованием *Mutex*. Также добавим в конструктор задач *LedTask* и *ButtonTask* ссылку на Mutex.
+
+.Заголовочный файл ButtonTask.h
+[source, cpp]
+----
+#ifndef BUTTONTASK
+#define BUTTONTASK
+
+#include "thread.hpp" // for Thread
+#include "IButton.h" // for IButton
+#include "mailbox.hpp"  // for MailBox
+#include "mutex.hpp" // for Mutex
+#include <chrono> // for ms
+
+class ButtonTask : public OsWrapper::Thread<2048>
+{
+public:
+  ButtonTask(IButton& button, OsWrapper::MailBox<char*, 1>& mailBox, char* message, OsWrapper::Mutex& mutex) : mButton(button), mMailBox(mailBox), mMessage(message), mMutex(mutex) {}
+  void Execute() override;
+private:
+  IButton& mButton;
+  OsWrapper::MailBox<char*, 1>& mMailBox;
+  OsWrapper::Mutex& mMutex;
+  char* mMessage;
+};
+
+#endif
+----
+
+.Файл ButtonTask.cpp
+[source, cpp]
+----
+#include "ButtonTask.h" // for ButtonTask
+#include "Button.h" // for Button
+#include <iostream> // for std
+#include "mutex.hpp" // for mutex
+
+void ButtonTask::Execute()
+{
+  for(;;)
+  {
+    Sleep(1ms);
+    // Захватить ресурс std::cout
+    mMutex.Lock();
+    std::cout << "Button Task:";
+    std::cout << "Here comes a message from ButtonTask" << std::endl;
+    // Освободить ресурс
+    mMutex.UnLock();
+  }
+}
+----
+
+.Заголовочный файл LedTask.hpp
+[source, cpp]
+----
+#ifndef LEDTASK
+#define LEDTASK
+
+#include "thread.hpp" // for Thread
+#include "ILed.h" // for ILed
+#include "mailbox.hpp"  // for MailBox
+#include <chrono> // for ms
+#include "mutex.hpp" // for Mutex
+
+class LedTask : public OsWrapper::Thread<2048>
+{
+public:
+  LedTask(ILed& led, OsWrapper::MailBox<char*, 1>& mailBox, OsWrapper::Mutex& mutex) : mLed(led), mMailBox(mailBox), mMutex(mutex) {}
+  void Execute() override;
+private:
+  ILed& mLed;
+  OsWrapper::MailBox<char*, 1>& mMailBox;
+  OsWrapper::Mutex& mMutex;
+};
+
+#endif
+----
+
+.Файл LedTask.cpp
+[source, cpp]
+----
+#include "ledtask.hpp"
+#include "gpioaregisters.hpp" // for GPIOA
+#include "Led.h" // for Led
+#include <iostream> // for std
+#include "mutex.hpp" // for mutex
+
+void LedTask::Execute()
+{
+  for(;;)
+  {
+    Sleep(1ms);
+    // Захватить ресурс std::cout
+    mMutex.Lock();
+    std::cout << "Led Task:";
+    std::cout << "Here comes a message from LedTask" << std::endl;
+    // Освободить ресурс
+    mMutex.UnLock();
+  }
+} ;
+----
+
+.main.cpp
+[source, cpp]
+----
+#include "rtos.hpp"         // for Rtos
+#include "mailbox.hpp"      // for Mailbox
+#include "event.hpp"        // for Event
+
+#include "myfirsttask.h" // for MyFirstTask
+#include "ledtask.hpp"     // for Led1Task
+#include "ButtonTask.h" // for ButtonTask
+#include "Led.h" // for Led
+#include "Button.h" // for Button
+//#include "myfirsttask.h"    // for MyFirstTask
+//#include "buttontask.h"   //for ButtonTask
+#include "rccregisters.hpp" // for RCC
+
+//#include "Application/Diagnostic/GlobalStatus.hpp"
+#include "gpioaregisters.hpp"  // for GPIOA
+#include "gpiocregisters.hpp"  // for GPIOC
+
+std::uint32_t SystemCoreClock = 16'000'000U;
+
+
+extern "C" {
+int __low_level_init(void)
+{
+  //Switch on external 16 MHz oscillator
+  RCC::CR::HSION::On::Set();
+ // while (RCC::CR::HSIRDY::NotReady::IsSet())
+  {
+
+  }
+  //Switch system clock on external oscillator
+  RCC::CFGR::SW::Hsi::Set();
+//  while (!RCC::CFGR::SWS::Hsi::IsSet())
+ {
+
+  }
+  //Switch on clock on PortA and PortC
+  RCC::AHB1ENRPack<
+      RCC::AHB1ENR::GPIOCEN::Enable,
+      RCC::AHB1ENR::GPIOAEN::Enable
+  >::Set();
+
+  RCC::APB2ENR::SYSCFGEN::Enable::Set();
+
+  //LED1 on PortA.5, set PortA.5 as output
+  GPIOA::MODER::MODER5::Output::Set();
+
+  /* LED2 on PortC.9, LED3 on PortC.8, LED4 on PortC.5 so set PortC.5,8,9 as output */
+  GPIOC::MODERPack<
+      GPIOC::MODER::MODER5::Output,
+      GPIOC::MODER::MODER8::Output,
+      GPIOC::MODER::MODER9::Output,
+      GPIOC::MODER::MODER13::Input
+  >::Set();
+
+  return 1;
+}
+}
+
+OsWrapper::Mutex mutexIostream; // Mutex для ресурса std::cout
+
+LedTask ledTask(led1, buttonMailBox, mutexIostream);
+ButtonTask buttonTask(button, buttonMailBox, message, mutexIostream);
+
+int main()
+{
+  using namespace OsWrapper;
+  Rtos::CreateThread(ledTask, "LedTask", ThreadPriority::highest);
+  Rtos::CreateThread(buttonTask, "ButtonTask", ThreadPriority::normal);
+  Rtos::Start();
+
+  return 0;
+}
+----
+
+Вывод терминала при использовании *Mutex* будет таким.
+
+.Вывод терминала
+image::terminal_output_mutex.png[]
+
+Как можно заметить, при использовании *Mutex* задачи выполняются корректно: новая задача не начинает выполняться, пока не закончилась старая.
+
+== Вывод
+
+В ходе данной лабораторной работы была изучена операционная система реального времени. Были созданы две задачи и реализована их обработка через события и MailBox. Кроме того, для того, чтобы задачи обрабатывались корректно, были использованы примитивы синхронизации : *Critical Section* и *Mutex*.
